@@ -1,0 +1,33 @@
+application: the-stevening
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: true
+
+libraries:                                                                   
+- name: jinja2                                                                  
+  version: latest                                                               
+- name: markupsafe                                                              
+  version: latest
+- name: MySQLdb                                                            
+  version: latest
+  
+handlers:
+- url: /styles
+  static_dir: styles
+- url: /images
+  static_dir: images
+- url: /css
+  static_dir: css
+- url: /font
+  static_dir: font
+- url: /js
+  static_dir: js
+- url: /.*
+  script: the-stevening.application
+- url: /csv
+  static_dir: csv
+  application_readable: true
+
+builtins:
+- remote_api: on
