@@ -2,8 +2,9 @@
 
 {% block content %}
 	<div id='matchcontent'>
+		<div id='play1' class='playbutton' onclick="javascript:playSong('galvanize.mp3');return false;">Play</div>
+		<div id='play2' class='playbutton' onclick="javascript:playSong('FunkParty.mp3');return false;">Play</div>
 	</div>
-
 	<div id='audiowrapper'></div>
 	<style>
 	#matchcontent{
@@ -12,6 +13,25 @@
 		background-image: url("/images/matchupback.png");
 		background-size: 100%;
     	background-repeat: no-repeat;
+	}
+	.playbutton{
+		position: absolute;
+		height: 30px;
+		text-align: center;
+		font-weight: bold;
+		line-height: 30px;
+		width: 50px;
+		background-color: #80E6FF;
+		color: black;
+		z-index: 60;
+	}
+	#play1{
+		top: 42%;
+		left: 35%;
+	}
+	#play2{
+		top: 42%;
+		left: 55%;
 	}
 	</style>
 {% endblock %}
