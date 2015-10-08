@@ -3,10 +3,11 @@ body, html{
 	background-color: #5E5E5E;
 }
 
+
+
 .hfbar{
 	position: fixed;
 	width: 100%;
-	background-color: #353535;
 	color: #B7B7B7;
 	height: 40px;
 	line-height: 40px;
@@ -15,10 +16,19 @@ body, html{
 
 #top_bar{
 	top: 0;
+	padding-left: 12vw;
+	background-image: url("/images/bar.png");
+	background-size: 100% 100%;
+    background-repeat: no-repeat;
+
 }
 
 #bottom_bar{
 	bottom: 0;
+	background-image: url("/images/bbar.png");
+	background-size: 100% 100%;
+    background-repeat: no-repeat;
+
 	border-top: #2E2E2E solid 2px;
 }
 
@@ -26,8 +36,8 @@ body, html{
 	position: relative;
 	width: 90vw;
 	margin-left: 5vw;
-	min-height: 100vh;
-	background-color: #262626;
+	min-height: 110vh;
+	background-color: #171717;
 	border-left: solid black 1px;
 	border-right: solid black 1px;
 }
@@ -39,4 +49,44 @@ body, html{
 	background-color: black;
 	color: white;
 	left: 12%;
+	padding-top: 40px;
+}
+
+#navlist{
+	display: inline;
+	list-style-type:none;
+	margin: 0;
+	padding: 0;
+}
+ul li {
+	display: inline-block;
+}
+.navlink{
+	text-decoration: none;
+	color: white;
+	display:block;
+	margin: 0 15px;
+	line-height: 40px;
+	height:40px;
+}
+.navlink:hover{
+	color: #80E6FF;
+}
+.navlink:active{
+	color: #00CCFF;
+}
+
+#mtopbar{
+	position: fixed;
+	width: 100vw;
+	height: 40px;
+	background-color: #171717;
+}
+#mnavbutton{
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 40px;
+	background-color: white;
 }

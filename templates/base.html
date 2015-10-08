@@ -7,18 +7,26 @@
       <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1"/>
       <script type="text/javascript" src="/js/jquery-2.1.3.min.js"></script>
       <script type="text/javascript" src="/js/jquery-ui.min.js"></script>
+      <script type="text/javascript" src="/js/base.js"></script>
     </head>
 
     <body>
     <div id='content'>
-      <div id='top_bar' class='hfbar'>This is the top bar</div>
+      <div id='top_bar' class='hfbar'>
+        <ul id='navlist'>
+          <li><a class='navlink' href='/'>Home</a></li>
+          <li><a class='navlink' href='/matchups'>Matchups</a></li>
+          <li><a class='navlink' href='/library'>Library</a></li>
+          <li><a class='navlink' href='/standings'>Standings</a></li>
+        </ul>
+      </div>
         <div id='panel'>
           <div id='contentt'>
             {% block content %}
             {% endblock %}
           </div>
         </div>
-      <div id='bottom_bar' class='hfbar'>This is the bottom bar</div>
+      <div id='bottom_bar' class='hfbar'></div>
     </div>
 
     <div id='footer'>

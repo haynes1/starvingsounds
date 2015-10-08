@@ -1,0 +1,55 @@
+body, html{
+	margin: 0;
+}
+p{
+	margin:0;
+}
+
+#mtopbar{
+	position: fixed;
+	top: 0;
+	width: 100vw;
+	height: 40px;
+	background-image: url("/images/mbar.png");
+	background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+#nav_expand{
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 40px;
+}
+
+#nav_container{
+	position: absolute;
+	top: 40px;
+	left: -55vw;
+	width: 55vw;
+	height: calc(100% - 40px);
+	background-color: #5E5E5E;
+}
+.navlink{
+	text-decoration: none;
+	color: white;
+	display:block;
+	margin: 0 15px;
+	line-height: 40px;
+	height:40px;
+}
+.navlink:hover{
+	color: #80E6FF;
+}
+.navlink:active{
+	color: #00CCFF;
+}
+#title{
+	position:fixed;
+	top:0;
+	left:50%;
+	transform: translateX(-50%);
+	height: 40px;
+	line-height: 40px;
+	font-size: 115%;
+}

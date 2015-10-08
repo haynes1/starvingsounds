@@ -96,22 +96,55 @@ class Home(BaseHandler):
     def get(self):
         self.render('home.html')
 
-class Matchup(BaseHandler):
+class Matchups(BaseHandler):
     def get(self):
-        self.render('home.html')
+        self.render('matchups.html')
 
 class Standings(BaseHandler):
     def get(self):
-        self.render('home.html')
+        self.render('standings.html')
+
+class Library(BaseHandler):
+    def get(self):
+        self.render('library.html')
 
 class Profile(BaseHandler):
     def get(self):
-        self.render('home.html')
+        self.render('aprofile1.html')
+
+class MHome(BaseHandler):
+    def get(self):
+        self.render('mhome.html')
+
+    def post(self):
+        self.render('mhome.html')
+
+class mMatchups(BaseHandler):
+    def get(self):
+        self.render('mmatchups.html')
+
+class mStandings(BaseHandler):
+    def get(self):
+        self.render('mstandings.html')
+
+class mLibrary(BaseHandler):
+    def get(self):
+        self.render('mlibrary.html')
+
+class mProfile(BaseHandler):
+    def get(self):
+        self.render('maprofile1.html')
 
 
 application = webapp2.WSGIApplication([
     ('/', Home),
-    ('/matchup', Matchup),
+    ('/matchups', Matchups),
     ('/standings', Standings),
-    ('/profile', Profile)
+    ('/library', Library),
+    ('/profile', Profile),
+    ('/mhome', MHome),
+    ('/mmatchups', mMatchups),
+    ('/mstandings', mStandings),
+    ('/mlibrary', mLibrary),
+    ('/mprofile', mProfile),
 ], debug=True)
