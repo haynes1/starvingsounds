@@ -52,4 +52,19 @@ p{
 	height: 40px;
 	line-height: 40px;
 	font-size: 115%;
+	color: white;
+}
+#controlbar{
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	height: 100px;
+	background-color: #171717;
+	border-top: solid gray 1px;
+}
+#acontrol{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 }

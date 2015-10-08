@@ -30,6 +30,7 @@ body, html{
     background-repeat: no-repeat;
 
 	border-top: #2E2E2E solid 2px;
+	opacity: 0;
 }
 
 #panel{
@@ -89,4 +90,18 @@ ul li {
 	height: 100%;
 	width: 40px;
 	background-color: white;
+}
+#audiowrapper{
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 40px;
+	background-color: #2E2E2E;
+	z-index: 100;
+}
+#acontrol{
+	position: absolute;
+	left: 25%;
+	top: 5px;
 }

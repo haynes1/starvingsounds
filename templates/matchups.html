@@ -1,5 +1,17 @@
 {% extends "base.html" %}
 
 {% block content %}
-	<h1>Matchups</h1>
+	<div id='matchcontent'>
+	</div>
+
+	<div id='audiowrapper'></div>
+	<style>
+	#matchcontent{
+		position: relative;
+		height: 100%;
+		background-image: url("/images/matchupback.png");
+		background-size: 100%;
+    	background-repeat: no-repeat;
+	}
+	</style>
 {% endblock %}
