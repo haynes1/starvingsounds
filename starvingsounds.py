@@ -100,17 +100,17 @@ class Home(BaseHandler):
     def post(self):
         self.render('home.html')
 
-class Matchup(BaseHandler):
+class Matchups(BaseHandler):
 
     def get(self):
-        self.render('matchup.html')
+        self.render('matchups.html')
 
     def post(self):
-        self.render('matchup.html')
+        self.render('matchups.html')
 
 
 
 application = webapp2.WSGIApplication([
     ('/', Home),
-    ('/matchup', Matchup)
+    ('/matchups', Matchups)
 ], debug=True)
