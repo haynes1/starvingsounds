@@ -78,62 +78,6 @@ def h_valid_pw(email, password, h):
     salt = h.split(',')[0]
     return h == make_pw_hash(email, password, salt)
 
-#------------------------File Processing----------------------------
-def process_senator_csv(blob_info):
-    blob_reader = blobstore.BlobReader(blob_info.key())
-    reader = csv.reader(blob_reader, delimiter='\n')
-    for row in reader:
-        row_str = row[0]
-        id, state, rank, name, gender, party, fyio, fbid, twid, ployalty, enacted, sponsored, cosponsored, li = row_str.split(',')
-        entry = Senator(bioguide_id=id, state=state, rank=rank, name=name.decode('latin-1'), gender=gender, party=party, fyio=int(fyio), fbid=fbid, twid=twid, ployalty=int(ployalty), enacted=int(enacted), sponsored=int(sponsored), cosponsored=int(cosponsored), li=int(li))
-        entry.put()
-
-def process_rep_csv(blob_info):
-    blob_reader = blobstore.BlobReader(blob_info.key())
-    reader = csv.reader(blob_reader, delimiter='\n')
-    for row in reader:
-        row_str = row[0]
-        id, state, district, name, gender, party, fyio, fbid, twid, ployalty, enacted, sponsored, cosponsored, li = row_str.split(',')
-        entry = Representative(bioguide_id=id, state=state, district=int(district), name=name.decode('latin-1'), gender=gender, party=party, fyio=int(fyio), fbid=fbid, twid=twid, ployalty=int(ployalty), enacted=int(enacted), sponsored=int(sponsored), cosponsored=int(cosponsored), li=int(li))
-        entry.put()
-
-#-------------------------Database Classes-----------------------------
-
-class Senator(db.Model):
-    bioguide_id = db.StringProperty(required = True)
-    state = db.StringProperty(required = True)
-    rank = db.StringProperty(required = True)
-    name = db.StringProperty(required = True)
-    gender = db.StringProperty(required = True)
-    party = db.StringProperty(required = True)
-    fyio = db.IntegerProperty(required = True)
-    fbid = db.StringProperty(required = True)
-    twid = db.StringProperty(required = True)
-    ployalty = db.IntegerProperty(required = True)
-    enacted = db.IntegerProperty(required = True)
-    sponsored = db.IntegerProperty(required = True)
-    cosponsored = db.IntegerProperty(required = True)
-    li = db.IntegerProperty(required = True)
-
-class Representative(db.Model):
-    bioguide_id = db.StringProperty(required = True)
-    state = db.StringProperty(required = True)
-    district = db.IntegerProperty(required = True)
-    name = db.StringProperty(required = True)
-    gender = db.StringProperty(required = True)
-    party = db.StringProperty(required = True)
-    fyio = db.IntegerProperty(required = True)
-    fbid = db.StringProperty(required = True)
-    twid = db.StringProperty(required = True)
-    ployalty = db.IntegerProperty(required = True)
-    enacted = db.IntegerProperty(required = True)
-    sponsored = db.IntegerProperty(required = True)
-    cosponsored = db.IntegerProperty(required = True)
-    li = db.IntegerProperty(required = True)
-
-class DatastoreFile(db.Model):
-  data = db.BlobProperty(required=True)
-  mimetype = db.StringProperty(required=True)
 
 #--------------------------Pages----------------------------------------
 class BaseHandler(webapp2.RequestHandler):
@@ -147,132 +91,26 @@ class BaseHandler(webapp2.RequestHandler):
     def render(self, template, **kw):
         self.write(self.render_str(template, **kw))
 
-    def get_politician_ids(self,dist):
-        state, district = dist.split(':')
-        s = GqlQuery('SELECT senior_senator, junior_senator FROM State WHERE abbreviation=:1', state).get()
-        q = District.all()
-        q.filter('state', state)
-        h = q.filter('num', 3).get()
-        politicians = dict(ss=s.senior_senator, js=s.junior_senator, hr=h.representative)
-        return politicians
 
-    def getHr(self, dist):
-        #returns a dictionary with the basic info for the representative of district=dist
-        state, district = dist.split(':')
-        rep = GqlQuery('SELECT * FROM Representative WHERE state=\'%s\' and district=%s' %(state, district)).get()
-        hr = dict(hrbioguideid = rep.bioguide_id,
-                hrstate = rep.state,
-                hrdistrict = rep.district,
-                hrname = rep.name.replace('_', ' '),
-                hrgender = rep.gender,
-                hrparty = rep.party,
-                hrfyio = rep.fyio,
-                hrfbid = rep.fbid,
-                hrtwid = rep.twid,
-                hrployalty = rep.ployalty,
-                hrenacted = rep.enacted,
-                hrsponsored = rep.sponsored,
-                hrcosponsored = rep.cosponsored,
-                hrli = rep.li)
-        return hr
+class Home(BaseHandler):
 
-    def getSs(self, dist):
-        #returns a dictionary with the basic info for the representative of district=dist
-        state, district = dist.split(':')
-        rep = GqlQuery('SELECT * FROM Senator WHERE state=\'%s\' and rank=\'S\'' %(state)).get()
-        ss = dict(ssbioguideid = rep.bioguide_id,
-                ssstate = rep.state,
-                ssrank = 'S',
-                ssname = rep.name.replace('_', ' '),
-                ssgender = rep.gender,
-                ssparty = rep.party,
-                ssfyio = rep.fyio,
-                ssfbid = rep.fbid,
-                sstwid = rep.twid,
-                ssployalty = rep.ployalty,
-                ssenacted = rep.enacted,
-                sssponsored = rep.sponsored,
-                sscosponsored = rep.cosponsored,
-                ssli = rep.li)
-        return ss
-
-    def getJs(self, dist):
-        #returns a dictionary with the basic info for the representative of district=dist
-        state, district = dist.split(':')
-        rep = GqlQuery('SELECT * FROM Senator WHERE state=\'%s\' and rank=\'J\'' %(state)).get()
-        js = dict(jsbioguideid = rep.bioguide_id,
-                jsstate = rep.state,
-                jsrank = 'J',
-                jsname = rep.name.replace('_', ' '),
-                jsgender = rep.gender,
-                jsparty = rep.party,
-                jsfyio = rep.fyio,
-                jsfbid = rep.fbid,
-                jstwid = rep.twid,
-                jsployalty = rep.ployalty,
-                jsenacted = rep.enacted,
-                jssponsored = rep.sponsored,
-                jscosponsored = rep.cosponsored,
-                jsli = rep.li)
-        return js
-
-class UploadHandler(webapp2.RequestHandler):
     def get(self):
-        upload_url = blobstore.create_upload_url('/upload')
- 
-        html_string = """
-         <form action="%s" method="POST" enctype="multipart/form-data">
-        Upload File:
-        <input type="file" name="file"> <br>
-        <input type="submit" name="submit" value="Submit">
-        </form>""" % upload_url
- 
-        self.response.out.write(html_string)
-
-class Upload(blobstore_handlers.BlobstoreUploadHandler):
+        self.render('home.html')
 
     def post(self):
-        upload_files = self.get_uploads('file')  # 'file' is file upload field in the form
-        info = upload_files[0]
- 
-        #process_senator_csv(info)
-        process_rep_csv(info)
-        self.redirect("/")
+        self.render('home.html')
 
-class Cards(BaseHandler):
-    def get_legislators(self, district):
-        state, dnum = district.split(':')
-        #query the datastore to get the house representative
-        msg = "SELECT name, party, fyio FROM Representative WHERE State=\'%s\' AND district=\'%d\'" %(state, int(dnum))
-        logging.error(msg)
-        q = db.GqlQuery(msg)
+class Matchup(BaseHandler):
 
     def get(self):
-        self.render('big3.html')
+        self.render('matchup.html')
 
     def post(self):
-        district = self.request.get('district')
-        if district: #pull legislator data, and render cards with data
-            self.get_legislators(district)
-            hrparams = self.getHr(district)
-            ssparams = self.getSs(district)
-            jsparams = self.getJs(district)
-            params = dict(district = district)
-            params.update(hrparams)
-            params.update(ssparams)
-            params.update(jsparams)
-            self.render('cards.html', **params)
-        else:
-            self.render('big3.html')
+        self.render('matchup.html')
 
-class JsonTest(BaseHandler):
-    def get(self):
-        self.render('sbaby.html')
 
 
 application = webapp2.WSGIApplication([
-    ('/', JsonTest),
-    ('/up', UploadHandler),
-    ('/upload', Upload),
-    ('/cards', Cards)
+    ('/', Home),
+    ('/matchup', Matchup)
 ], debug=True)
