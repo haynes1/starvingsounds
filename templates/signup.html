@@ -7,12 +7,23 @@
     <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
     <script type="text/javascript" src="/js/jquery-2.1.3.min.js"></script>
     <script type="text/javascript" src="/js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="/js/app.js"></script>
   </head>
 
  <body>
 <div id='ts'>
- <h1>Create Demo Account</h1>
- <p>this is also a test of our user system</p>
+<h1>Create Demo Account</h1>
+<p>this is also a test of our user system</p>
+<form method="post" name="signup" id='signup_form' onsubmit="javascript:submitSign();return false;">
+	<input id='name' class='signupinput' type="text" name="name" placeholder='Artist Name'></br>
+	<input id='email' class='signupinput' type="text" name="email" placeholder='Email'></br>
+	Upload Profile Picture<br>
+	<input type="file" name="profilepics" onchange="readimg(this);"><br>
+	<div id='demo_profile_pic'><img id='demo_profile_pic1'></div>
+	<input id='password' type="text" name="password" placeholder='password'><br>
+	<input id='confirmpass' type="text" name="confirmpass" placeholder='confirm password'><br>
+	<input id='subbutton' type='button' value='submit' onclick="javascript:submitSign();return false;">
+</form>
 
 </div>
 </body>

@@ -43,6 +43,22 @@ function nextSet(){
 	}
 }
 
-$( document ).ready(function() {
+function readimg(input) {
+	console.log('reading image')
+	if (input.files && input.files[0]) {
+		var reader = new FileReader();
+		reader.onload = function (e) {
+			console.log(e.target.result)
+			$('#demo_profile_pic').css('background-image', 'url('+e.target.result+')')
+        };
+		reader.readAsDataURL(input.files[0]);
+	}
+}
+
+function submitSignup(){
+	
+}
+
+$(document).ready(function() {
     console.log( "ready!" );
 });
