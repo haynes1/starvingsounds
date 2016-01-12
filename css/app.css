@@ -21,6 +21,13 @@ img{height:100%;}
 #play2{position:absolute;padding:10px;left:38%;top:50%;height:20px;width:40px;cursor:pointer;}
 #nextset{position:absolute;padding:5px 20px;left:48%;top:68%;height:20px;width:40px;cursor:pointer;}
 #acontrol{height:100%;width:100%;}
+
+
+/*Temp Signup Styles*/
+#ts{text-align:center;}
+
+
+
 @media screen and (min-width: 1200px){
 	#maiheader{width:80vw;min-width:1200px;left:50%;transform:translate(-50%);}
 	#maifooter{width:80vw;min-width:1200px;left:50%;transform:translate(-50%);}

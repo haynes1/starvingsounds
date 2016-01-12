@@ -79,6 +79,46 @@ def h_valid_pw(email, password, h):
     return h == make_pw_hash(email, password, salt)
 
 
+#--------------------------DB Classes----------------------------------------
+
+class User(db.Model):
+    username = db.StringProperty(required = True)
+    email = db.StringProperty(required = True)
+    pw_hash = db.StringProperty(required = True)
+    district = db.StringProperty()
+    age = db.IntegerProperty()
+    gender = db.StringProperty()
+    created = db.DateTimeProperty(required = True, auto_now = True)
+    last_modified = db.DateTimeProperty(required = True, auto_now = True)
+    token = db.StringProperty()
+
+    @classmethod
+    def by_id(cls, uid):
+        return User.get_by_id(uid)
+
+    @classmethod
+    def by_email(cls, email):
+        u = cls.all().filter('email =', email).get()
+        return u
+
+    @classmethod
+    def by_username(cls, username):
+        u = cls.all().filter('username =', username).get()
+        return u
+
+    @classmethod
+    def register(cls, username, email, pw):
+        pw_hash = make_pw_hash(username, pw)
+        return cls( username = username,
+                    email = email,
+                    pw_hash = pw_hash)
+
+    @classmethod
+    def login(cls, username, pw):
+        u = cls.by_username(username)
+        if u and valid_pw(username, pw, u.pw_hash):
+            return u
+
 #--------------------------Pages----------------------------------------
 class BaseHandler(webapp2.RequestHandler):
 
@@ -108,9 +148,17 @@ class Matchups(BaseHandler):
     def post(self):
         self.render('matchups.html')
 
+class Signup(BaseHandler):
+    def get(self):
+        self.render('signup.html')
+
+    def post(self):
+        self.render('signup.html')
+
 
 
 application = webapp2.WSGIApplication([
     ('/', Home),
+    ('/tempsignup', Signup),
     ('/matchups', Matchups)
 ], debug=True)
