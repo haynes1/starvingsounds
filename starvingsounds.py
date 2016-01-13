@@ -155,10 +155,18 @@ class Signup(BaseHandler):
     def post(self):
         self.render('signup.html')
 
+class Profile(BaseHandler):
+    def get(self):
+        self.render('profile.html')
+
+    def post(self):
+        self.render('profile.html')
+
 
 
 application = webapp2.WSGIApplication([
     ('/', Home),
     ('/tempsignup', Signup),
+    ('/profile', Profile),
     ('/matchups', Matchups)
 ], debug=True)

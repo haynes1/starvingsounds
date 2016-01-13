@@ -27,6 +27,8 @@ img{height:100%;}
 #ts{text-align:center;}
 #ts #demo_profile_pic{margin:10px auto;background:#262626;background-repeat:no-repeat;background-size:100%;height:150px;width:150px;border-radius:50%;border:solid gray 5px;}
 
+/*Profile Styles*/
+#profile{padding-top:100px;}
 
 
 @media screen and (min-width: 1200px){
