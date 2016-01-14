@@ -22,7 +22,7 @@ img{height:100%;}
 #nextset{position:absolute;padding:5px 20px;left:48%;top:68%;height:20px;width:40px;cursor:pointer;}
 #audiowrapper{position:relative;height:100%;width:100%;}
 #acontrol{display:block;margin:0;padding:0;width:100%;}
-
+#alert{position:fixed;padding:5px 0;top:40px;width:100%;background:#053d48;color:#03b1e9;text-align:center;opacity:0;}
 
 /*Temp Signup Styles*/
 #ts{text-align:center;}

@@ -14,6 +14,13 @@ function navShowHide(i){
 	}
 }
 
+function alert(msg){
+	$('#alert').html(msg)
+	$('#alert').css('opacity','1')
+	$('#alert').animate({opacity: '0'}, 3000);
+}
+
+
 function playSong_deprecated(songname){
     var player=document.getElementById('acontrol');
     var sourceMp3=document.getElementById('acontrol');
@@ -53,7 +60,22 @@ function getSet(){
 }
 
 function playSong(c){
+	var player=document.getElementById('acontrol');
+    var sourceMp3=document.getElementById('acontrol');
+    
 	$('#playbutton'+c).attr('value','played')
+	data = $('#songbay').html()
+	r = data.split(';')[c].split(',')
+	songname = r[r.length - 1]
+	console.log(songname)
+
+	tsrc = '/audio/XXXXX'
+    src = tsrc.replace('XXXXX', songname)
+    console.log(src)
+    sourceMp3.src= src;
+              
+    player.load(); //just start buffering (preload)
+    player.play(); //start playing
 }
 
 
@@ -84,7 +106,7 @@ function chooseWinner(winner){
 		$('#winbutton'+winner).attr('value','winner')
 		$('#winbutton'+loser).attr('value','loser')
 
-	} else {console.log('please play both songs before selecting a winner')}
+	} else {alert('please play both songs before selecting a winner')}
 }
 
 function submitMatchup(){
@@ -95,7 +117,7 @@ function submitMatchup(){
 		console.log('winner is song 2')
 		getSet()
 	} else{
-		console.log('please play both songs and select a winner')
+		alert('please play both songs and select a winner')
 	}
 }
 
