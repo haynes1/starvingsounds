@@ -32,6 +32,9 @@ img{height:100%;}
 #splashfoot{height:50px;z-index:40;}
 #iash_wrapper{position:relative;}
 
+/*esf styles*/
+#esf{padding-top:100px;text-align:center;}
+
 
 /*mobile only*/
 @media screen and (min-width: 420px){

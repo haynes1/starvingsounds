@@ -119,6 +119,16 @@ class User(db.Model):
         if u and valid_pw(username, pw, u.pw_hash):
             return u
 
+class EmailSignee(db.Model):
+    created = db.DateTimeProperty(required = True, auto_now = True)
+    email = db.StringProperty(required = True)
+    name = db.StringProperty(required = True)
+
+    @classmethod
+    def by_email(cls, email):
+        u = cls.all().filter('email =', email).get()
+        return u
+
 #--------------------------Pages----------------------------------------
 class BaseHandler(webapp2.RequestHandler):
 
@@ -168,11 +178,19 @@ class Profile(BaseHandler):
     def post(self):
         self.render('profile.html')
 
+class Esf(BaseHandler):
+    def get(self):
+        self.render('esf.html')
+
+    def post(self):
+        self.render('esf.html')
+
 
 
 application = webapp2.WSGIApplication([
     ('/', Home),
     ('/tempsignup', Signup),
     ('/profile', Profile),
-    ('/matchups', Matchups)
+    ('/matchups', Matchups),
+    ('/emailsignup', Esf)
 ], debug=True)
