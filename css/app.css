@@ -32,7 +32,12 @@ img{height:100%;}
 #profile{padding-top:100px;}
 
 /*Matchup Styles*/
-#matchupsui{position:absolute;top:30%;left:50%;transform:translate(-50%,-50%);max-width:100vw;padding-top:60px;}
+#matchupsui{padding-top:50px;max-width:100vw;font-size:85%;text-align:center;}
+#matchupsui img{display:block;}
+#matchupsui table{position:absolute;top:30%;left:35%;width:350px;}
+#matchups .aname{font-size:150%;padding-bottom:30px;}
+#matchups .playbutton{padding-bottom:30px;}
+#matchups .winbutton{padding-top:30px;}
 
 
 @media screen and (min-width: 1200px){
@@ -54,7 +59,7 @@ img{height:100%;}
 	#mainav_wrapper ul{position:absolute;top:125px;left:0;display:block;padding:0;height:calc(100vh - 125px);z-index:1;background-color:black;width:calc(100vw - 40px);max-width:400px;border-right:solid 2px white;}
 	#mainav_wrapper li{display:list-item;margin:0;max-height:calc((100vh - 140px)/11);}
 	#maimnav_head{position:absolute;top:0;left:0;display:block;background-color:darkgreen;height:125px;z-index:1;width:calc(100vw - 40px);max-width:400px;border-right:solid 2px white;}
-	#maimnav_close{background-color:lightblue;width:40px;height:40px;float:right;}
+	#maimnav_close{width:40px;height:40px;float:right;}
 	#maidesktop_wrapper{display:none;}
 	#maicontent{left:0;width:100%;}
 }

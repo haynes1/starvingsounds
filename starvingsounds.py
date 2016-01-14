@@ -153,7 +153,7 @@ class Home(BaseHandler):
 
 class Matchups(BaseHandler):
     matchup1 = '1;Griz,Fine Way To Die,11,2,18,3;Chemical Brothers,Galvanize,11,3,15,2'
-    matchup2 = '1;Griz,Stop Trippin,12,1,18,3;Jungle,Busy Earning,11,1,17,3'
+    matchup2 = '1;Jungle,Busy Earning,11,1,17,3;Griz,Stop Trippin,12,1,18,3'
     matchup3 = '1;Kendrick Lamar,The Blacker The Berry,10,1,12,1;Jay Z,Justify My Thug,9,1,15,2'
     matchup4 = '2;Jungle,Time,10,2,17,3;Mark E Bassy,Relapse,8,2,10,3'
     

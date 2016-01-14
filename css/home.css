@@ -33,7 +33,7 @@ img{height:100%;}
 #iash_wrapper{position:relative;}
 
 /*esf styles*/
-#esf{padding-top:100px;text-align:center;}
+#esf{min-height:calc(100vh - 100px);padding-top:100px;text-align:center;background-image:url('/images/openerback.png');background-repeat:no-repeat;background-size:100%;}
 #emailform{margin:0 auto;width:500px;max-width:90vw;}
 
 

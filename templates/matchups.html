@@ -1,9 +1,11 @@
 {% extends "app.html" %}
 
 {% block content %}
+<div id='matchups'>
 	<div id='songbay' value='0'></div>
 
 	<div id='matchupsui'>
+		<img src='/images/matchupback.png' alt='...'>
 		<table>
 			<tr id='artistnames'>
 				<td id='aname1' class='aname'>A Name 1</td>
@@ -12,13 +14,13 @@
 			</tr>
 			<tr>
 				<td id='songname1' class='songname'>songname1</td>
-				<td>VS</td>
+				<td style='color:#03b1e9;text-align:center;padding:0 10px'> </td>
 				<td id='songname2' class='songname'>songname2</td>
 			</tr>
 			<tr>
-				<td><div id='playbutton1' class='matchup-playbutton' onclick="javascript:playSong('1');return false;" value='deselected'>Play</div></td>
+				<td><div id='playbutton1' class='playbutton' onclick="javascript:playSong('1');return false;" value='deselected'>Play</div></td>
 				<td></td>
-				<td><div id='playbutton2' class='matchup-playbutton' onclick="javascript:playSong('2');return false;" value='deselected'>Play</div></td>
+				<td><div id='playbutton2' class='playbutton' onclick="javascript:playSong('2');return false;" value='deselected'>Play</div></td>
 			</tr>
 			<tr>
 				<td id='songwinp1' class='songwinp'>Song Win%:  X%</td>
@@ -31,15 +33,14 @@
 				<td id='artistwinp2' class='artistwinp'>Artist Win%: X%</td>
 			</tr>
 			<tr>
-				<td><div id='winbutton1' class='matchup-winbutton' onclick="javascript:chooseWinner('1');return false;" value='deselected'>Winner</div></td>
+				<td><div id='winbutton1' class='winbutton' onclick="javascript:chooseWinner('1');return false;" value='deselected'>Winner</div></td>
 				<td></td>
-				<td><div id='winbutton2' class='matchup-winbutton' onclick="javascript:chooseWinner('2');return false;" value='deselected'>Winner</div></td>
-			</tr>
-			<tr>
-				<td><div id='matchupSubmit' onclick="javascript:submitMatchup();return false;" value='none'>Submit</div></td>
+				<td><div id='winbutton2' class='winbutton' onclick="javascript:chooseWinner('2');return false;" value='deselected'>Winner</div></td>
 			</tr>
 		</table>
+		<div id='matchupSubmit' onclick="javascript:submitMatchup();return false;" value='none'>Submit</div>
 	</div>
+</div>
 
 	<script>
 		$(document).ready(function() {
