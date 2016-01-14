@@ -30,6 +30,7 @@ function playSong_deprecated(songname){
 function getSet(){
 	var current_set = $('#songbay').attr('value')
 	$.post('/matchups', {funct:'getSet', current_set:current_set}, function(data){
+		$('.playbutton').attr('value','deselected')
 		a = data.split(';')
 		$('#songbay').attr('value',a[0])
 		$('#songbay').html(data)
