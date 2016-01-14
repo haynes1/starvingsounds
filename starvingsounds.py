@@ -21,6 +21,7 @@ from google.appengine.ext import db
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 from google.appengine.ext.db import GqlQuery
+from google.appengine.api import mail
 
 #from oauth2client.client import flow_from_clientsecrets
 #from oauth2client.client import FlowExchangeError
@@ -151,18 +152,27 @@ class Home(BaseHandler):
         self.render('home.html')
 
 class Matchups(BaseHandler):
-    matchup1 = '1;Griz,Fine Way To Die,11,2,18,3;Jay Z,Justify My Thug,9,1,15,2'
-
+    matchup1 = '1;Griz,Fine Way To Die,11,2,18,3;Chemical Brothers,Galvanize,11,3,15,2'
+    matchup2 = '1;Griz,Stop Trippin,12,1,18,3;Jungle,Busy Earning,11,1,17,3'
+    matchup3 = '1;Kendrick Lamar,The Blacker The Berry,10,1,12,1;Jay Z,Justify My Thug,9,1,15,2'
+    matchup4 = '2;Jungle,Time,10,2,17,3;Mark E Bassy,Relapse,8,2,10,3'
+    
     def get(self):
         self.render('matchups.html')
 
     def post(self):
         funct = self.request.get('funct')
         current_set = self.request.get('current_set')
+        response = self.matchup1
         if funct == 'getSet':
             next_set = (int(current_set) + 1) % 6
-            r='got set, getting set '+ str(next_set)
-        self.response.out.write(self.matchup1)
+            if next_set == 2:
+                response = self.matchup2
+            if next_set == 3:
+                response = self.matchup3
+            if next_set == 4:
+                response = self.matchup4
+        self.response.out.write(response)
 
 class Signup(BaseHandler):
     def get(self):
@@ -183,7 +193,26 @@ class Esf(BaseHandler):
         self.render('esf.html')
 
     def post(self):
-        self.render('esf.html')
+        msg = 'invalid email'
+        name = self.request.get('name')
+        email = self.request.get('email')
+        if valid_email(email):
+            msg = 'valid email'
+            e = EmailSignee.by_email(email)
+            if e:
+                msg ='already on list'
+                self.write(msg)
+            else: #vetted email: add to db, send thankyou email, and success code to front end
+                self.write('success')
+                #send thank you email
+                sender_address = "<starvingsounds-1091@appspot.gserviceaccount.com>"
+                subject = "Welcome to the NewsLetter!!"
+                body = 'congrats on becoming a boss'
+                mail.send_mail(sender_address, email, subject, body)
+                potential_signee=EmailSignee(name=name,email=email)
+                potential_signee.put()
+
+        self.response.out.write(msg)
 
 
 

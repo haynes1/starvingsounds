@@ -11,7 +11,22 @@
 
   <body>
   <div id='esf'>
+  <img src='/images/logo.png' alt='...'>
   <h1>Starving Sounds</h1>
   <h2>Signup and be the first to know when it drops</h2>
+  <form method="post" name="signup" id='emailform' onsubmit="javascript:submitEsf();return false;">
+    <input id='name' class='signupinput' type="text" name="name" placeholder='Name'></br>
+    <input id='email' class='signupinput' type="text" name="email" placeholder='Email'></br>
+    <input id='subbutton' type='button' value='submit' onclick="javascript:submitEsf();return false;">
+  </form>
 </div>
+<script>
+function submitEsf(){
+  name = document.getElementById('name').value;
+  email = document.getElementById('email').value;
+  $.post('/emailsignup', {name:name, email: email}, function(data){
+    console.log(data)
+  });
+}
+</script
 </body>

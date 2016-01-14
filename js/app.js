@@ -80,8 +80,22 @@ function chooseWinner(winner){
 		if (winner=='1'){loser = 2}
 		updateStats(loser, '0')
 		updateStats(winner, '1')
+		$('#winbutton'+winner).attr('value','winner')
+		$('#winbutton'+loser).attr('value','loser')
 
 	} else {console.log('please play both songs before selecting a winner')}
+}
+
+function submitMatchup(){
+	if ($('#winbutton1').attr('value') == 'winner'){
+		console.log('winner is song 1')
+		getSet()
+	} else if($('#winbutton2').attr('value') == 'winner'){
+		console.log('winner is song 2')
+		getSet()
+	} else{
+		console.log('please play both songs and select a winner')
+	}
 }
 
 //shows )your image when uploading a profile picture
