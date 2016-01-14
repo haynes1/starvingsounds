@@ -141,12 +141,18 @@ class Home(BaseHandler):
         self.render('home.html')
 
 class Matchups(BaseHandler):
+    matchup1 = '1;Griz,Fine Way To Die,11,2,18,3;Jay Z,Justify My Thug,9,1,15,2'
 
     def get(self):
         self.render('matchups.html')
 
     def post(self):
-        self.render('matchups.html')
+        funct = self.request.get('funct')
+        current_set = self.request.get('current_set')
+        if funct == 'getSet':
+            next_set = (int(current_set) + 1) % 6
+            r='got set, getting set '+ str(next_set)
+        self.response.out.write(self.matchup1)
 
 class Signup(BaseHandler):
     def get(self):

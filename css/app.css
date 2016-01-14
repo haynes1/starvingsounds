@@ -20,7 +20,8 @@ img{height:100%;}
 #play1{position:absolute;padding:10px;left:60%;top:50%;height:20px;width:40px;cursor:pointer;}
 #play2{position:absolute;padding:10px;left:38%;top:50%;height:20px;width:40px;cursor:pointer;}
 #nextset{position:absolute;padding:5px 20px;left:48%;top:68%;height:20px;width:40px;cursor:pointer;}
-#acontrol{height:100%;width:100%;}
+#audiowrapper{background:lightblue;position:relative;height:100%;width:100%;}
+#acontrol{display:block;margin:0;padding:0;width:100%;}
 
 
 /*Temp Signup Styles*/
@@ -29,6 +30,9 @@ img{height:100%;}
 
 /*Profile Styles*/
 #profile{padding-top:100px;}
+
+/*Matchup Styles*/
+#matchupsui{position:absolute;top:30%;left:50%;transform:translate(-50%,-50%);max-width:100vw;padding-top:60px;}
 
 
 @media screen and (min-width: 1200px){
