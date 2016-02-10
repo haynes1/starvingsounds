@@ -62,16 +62,13 @@ function getSet(){
 function playSong(c){
 	var player=document.getElementById('acontrol');
     var sourceMp3=document.getElementById('acontrol');
-    
+
 	$('#playbutton'+c).attr('value','played')
 	data = $('#songbay').html()
 	r = data.split(';')[c].split(',')
 	songname = r[r.length - 1]
-	console.log(songname)
-
 	tsrc = '/audio/XXXXX'
     src = tsrc.replace('XXXXX', songname)
-    console.log(src)
     sourceMp3.src= src;
               
     player.load(); //just start buffering (preload)
@@ -127,14 +124,10 @@ function readimg(input) {
 	if (input.files && input.files[0]) {
 		var reader = new FileReader();
 		reader.onload = function (e) {
-			console.log(e.target.result)
 			$('#demo_profile_pic').css('background-image', 'url('+e.target.result+')')
         };
 		reader.readAsDataURL(input.files[0]);
 	}
 }
 
-function submitSignup(){
-	
-}
 

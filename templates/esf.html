@@ -11,7 +11,11 @@
 
   <body>
   <div id='esf'>
-  <img src='/images/logo.png' alt='...'>
+  <div id='esf_success'>
+    <h1>Thanks For Signing Up!</h1>
+    <img src='/images/check.png' alt='...' style='height:100px;width:100px'>
+  </div>
+  <img src='/images/logo.png' alt='...' >
   <h1>Starving Sounds</h1>
   <h2>Signup and be the first to know when it drops</h2>
   <form method="post" name="signup" id='emailform' onsubmit="javascript:submitEsf();return false;">
@@ -19,14 +23,28 @@
     <input id='email' class='signupinput' type="text" name="email" placeholder='Email'></br>
     <input id='subbutton' type='button' value='submit' onclick="javascript:submitEsf();return false;">
   </form>
+  <h3 id='esfalert'></h3>
 </div>
+
+<style>
+#esf_success{position:fixed;top:0;left:0;background:#262626;height:100vh;width:100vw;padding-top:100px;display:none;}
+</style>
 <script>
 function submitEsf(){
   name = document.getElementById('name').value;
   email = document.getElementById('email').value;
   $.post('/emailsignup', {name:name, email: email}, function(data){
-    console.log(data)
-  });
+    if (data == 'success'){
+      $("#email, #name").val("");
+      $('#esf_success').css('display','block')
+      $('#esf_success').animate({
+          opacity:0,
+      }, 2000, function() {
+      $('#esf_success').css('display','none')
+        });} else{
+        $('#esfalert').html(data)
+      }
+    });
 }
 </script
 </body>

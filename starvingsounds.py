@@ -31,6 +31,7 @@ from google.appengine.api import mail
 
 #logging.error('my string')
 
+secret = 'pimpsauce'
 login_session = {}
 
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
@@ -83,12 +84,13 @@ def h_valid_pw(email, password, h):
 #--------------------------DB Classes----------------------------------------
 
 class User(db.Model):
-    username = db.StringProperty(required = True)
+    name = db.StringProperty(required = True)
     email = db.StringProperty(required = True)
     pw_hash = db.StringProperty(required = True)
-    district = db.StringProperty()
-    age = db.IntegerProperty()
-    gender = db.StringProperty()
+    city = db.StringProperty(required = False)
+    state = db.StringProperty(required = False)
+    age = db.IntegerProperty(required = False)
+    gender = db.StringProperty(required = False)
     created = db.DateTimeProperty(required = True, auto_now = True)
     last_modified = db.DateTimeProperty(required = True, auto_now = True)
     token = db.StringProperty()
@@ -103,21 +105,23 @@ class User(db.Model):
         return u
 
     @classmethod
-    def by_username(cls, username):
-        u = cls.all().filter('username =', username).get()
+    def by_name(cls, name):
+        u = cls.all().filter('name =', name).get()
         return u
 
     @classmethod
-    def register(cls, username, email, pw):
-        pw_hash = make_pw_hash(username, pw)
-        return cls( username = username,
+    def register(cls,name, email, city, state, pw):
+        pw_hash = make_pw_hash(name, pw)
+        return cls( name = name,
                     email = email,
+                    city = city,
+                    state = state,
                     pw_hash = pw_hash)
 
     @classmethod
-    def login(cls, username, pw):
-        u = cls.by_username(username)
-        if u and valid_pw(username, pw, u.pw_hash):
+    def login(cls, name, pw):
+        u = cls.by_name(name)
+        if u:
             return u
 
 class EmailSignee(db.Model):
@@ -130,6 +134,23 @@ class EmailSignee(db.Model):
         u = cls.all().filter('email =', email).get()
         return u
 
+class Song(db.Model):
+    name = db.StringProperty(required = True)
+    artist = db.StringProperty(required = True)
+    album = db.StringProperty(required = True)
+    num-wins = db.IntegerProperty(required = False)
+    num-losses = db.IntegerProperty(required = False)
+    win-keys = db.IntegerProperty(required = False)
+    loss-keys = db.StringProperty(required = False)
+    win-percent = db.IntegerProperty(required = True)
+    created = db.DateTimeProperty(required = True, auto_now = True)
+
+class Album(db.Model):
+    name = db.StringProperty(required=True)
+    artist = db.StringProperty(required=True)
+    song-names = db.StringProperty()
+    song-keys = db.StringProperty()
+
 #--------------------------Pages----------------------------------------
 class BaseHandler(webapp2.RequestHandler):
 
@@ -141,6 +162,27 @@ class BaseHandler(webapp2.RequestHandler):
 
     def render(self, template, **kw):
         self.write(self.render_str(template, **kw))
+
+    def set_secure_cookie(self, name, val):
+        cookie_val = make_secure_val(val)
+        self.response.headers.add_header(
+            'Set-Cookie',
+            '%s=%s; Path=/' % (name, cookie_val))
+
+    def read_secure_cookie(self, name):
+        cookie_val = self.request.cookies.get(name)
+        return cookie_val and check_secure_val(cookie_val)
+
+    def login(self, user):
+        self.set_secure_cookie('user_id', str(user.key().id()))
+
+    def logout(self):
+        self.response.headers.add_header('Set-Cookie', 'user_id=; Path=/')
+
+    def initialize(self, *a, **kw):
+        webapp2.RequestHandler.initialize(self, *a, **kw)
+        uid = self.read_secure_cookie('user_id')
+        self.user = uid and User.by_id(int(uid))
 
 
 class Home(BaseHandler):
@@ -179,11 +221,49 @@ class Signup(BaseHandler):
         self.render('signup.html')
 
     def post(self):
-        self.render('signup.html')
+        name = self.request.get('name')
+        email = self.request.get('email')
+        city = self.request.get('city')
+        state = self.request.get('state')
+        password = self.request.get('password')
+        #ensure that the user is a new user
+        namequery = GqlQuery("SELECT * FROM User WHERE name = :1", name)
+        namequeryrow = namequery.get()
+        emailquery = GqlQuery("SELECT * FROM User WHERE email = :1", email)
+        emailqueryrow = emailquery.get()
+
+        if namequeryrow is None and emailqueryrow is None:
+            if name and email and city and state and password:
+                u = User.register(name,email,city,state,password)
+                u.put()
+                self.login(u)
+                self.response.out.write('success')
+        else:
+            self.response.out.write('failure')
+
+class Login(BaseHandler):
+    def get(self):
+        self.render('login.html')
+
+    def post(self):
+        name = self.request.get('name')
+        password = self.request.get('password')
+        u = User.login(name, password)
+        if u:
+            self.login(u)
+            self.response.out.write('success')
+        else:
+            msg = 'Invalid login'
+            self.response.out.write(msg)
+        
+
 
 class Profile(BaseHandler):
     def get(self):
-        self.render('profile.html')
+        if self.user:
+            self.render('profile.html')
+        else:
+            self.redirect('/')
 
     def post(self):
         self.render('profile.html')
@@ -201,16 +281,25 @@ class Esf(BaseHandler):
             e = EmailSignee.by_email(email)
             if e:
                 msg ='already on list'
-                self.write(msg)
             else: #vetted email: add to db, send thankyou email, and success code to front end
-                self.write('success')
                 #send thank you email
                 sender_address = "<starvingsounds-1091@appspot.gserviceaccount.com>"
-                subject = "Welcome to the NewsLetter!!"
-                body = 'congrats on becoming a boss'
+                subject = "Welcome to the Starving Sounds Newsletter"
+                body = name + ''',
+                Thank you for signing up for the Starving Sounds Newsletter.
+                You'll get first access to all features we drop, and be the first to know our launch date.
+                We're still in development right now, and there will be big changes in the coming weeks and months
+                Sincerely,
+
+                Nick Abbott and Alexander Haynes
+
+                Nick Abbott: Founder, Lead Designer, Manager
+                Alexander Haynes: Cofounder, Lead Developer
+                '''
                 mail.send_mail(sender_address, email, subject, body)
                 potential_signee=EmailSignee(name=name,email=email)
                 potential_signee.put()
+                msg='success'
 
         self.response.out.write(msg)
 
@@ -219,6 +308,7 @@ class Esf(BaseHandler):
 application = webapp2.WSGIApplication([
     ('/', Home),
     ('/tempsignup', Signup),
+    ('/login', Login),
     ('/profile', Profile),
     ('/matchups', Matchups),
     ('/emailsignup', Esf)

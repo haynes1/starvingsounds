@@ -20,10 +20,30 @@
 	Upload Profile Picture<br>
 	<input type="file" name="profilepics" onchange="readimg(this);"><br>
 	<div id='demo_profile_pic'><img id='demo_profile_pic1'></div>
-	<input id='password' type="text" name="password" placeholder='password'><br>
+	<input id='city' type="text" name="city" placeholder='city'><br>
+  <input id='state' type="text" name="state" placeholder='state'><br>
+  <input id='password' type="text" name="password" placeholder='password'><br>
 	<input id='confirmpass' type="text" name="confirmpass" placeholder='confirm password'><br>
 	<input id='subbutton' type='button' value='submit' onclick="javascript:submitSign();return false;">
 </form>
 
 </div>
+
+<script>
+function submitSign(){
+  password = $('#password').val()
+  confirmpass = $('#confirmpass').val()
+  console.log(password)
+  console.log(confirmpass)
+
+  if (password == confirmpass){
+    var fd = $('#signup_form').serialize();
+    $.post('/tempsignup', fd, function(data){
+      if (data == 'success'){window.location.replace("/")}
+    });
+  } else {
+    $('#password').attr('value', "don't match!")
+  }
+}
+</script>
 </body>
