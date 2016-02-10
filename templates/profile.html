@@ -2,6 +2,44 @@
 
 {% block content %}
 <div id='profile'>
-	Yo, profile stuff
+	<div id='profile-head' class='page-top'>
+		<div id='profile-head-top'>
+			Artist Name's Music Songs (x) Projects (x)
+		</div>
+		<div id='profile-head-content'>
+			<div id='profile-head-content-info'>
+				<div id='profile-head-album-name'>Album Name</div>
+				<div id='profile-head-artist-info'>
+					<div id='profile-head-artist-info-tracknum'>13 tracks</div>
+					Artist Name
+					<div id='profile-head-artist-info-year'>2015</div>
+				</div>
+			</div>
+			<div id='profile-head-content-albums'>
+				<div id='album-1' class='profile-head-album'></div>
+				<div id='album-current' class='profile-head-album'></div>
+				<div id='album-3' class='profile-head-album'></div>
+				<div id='album-4' class='profile-head-album'></div>				
+			</div>
+		</div>
+	</div>
+
+	<div id='table-wrapper'>
+	</div>
 </div>
+
+<style>
+	#profile-head{margin-top:40px;height:275px;}
+	#profile-head-top{position:relative;text-align:center;height:50px;line-height:50px;}
+	#profile-head-content{position:relative;height:calc(100% - 100px);padding:40px 0 20px 0;}
+	#profile-head-content-info{height:calc(60% - 20px);width:30%;margin-left:50%;padding-top:20px;}
+	#profile-head-content-albums{display:flex;position:relative;height:40%;width:80%;margin:0 auto;border-radius:500px;background:#262626;overflow:show;}
+	#profile-head-album-name{font-size:36px;text-align:center;}
+	#profile-head-artist-info{text-align:center;font-size:20px;padding:10px;}
+	#profile-head-artist-info-tracknum{float:left;font-size:12px;}
+	#profile-head-artist-info-year{float:right;font-size:12px;}
+	.profile-head-album{height:50px;width:50px;border-radius:50%;border:solid 3px gray;margin:7px 0 0 20px;background:#d9d9d9;}
+	#album-current{position:absolute;bottom:10px;height:180px;width:180px;}
+	#album-3{margin-left:230px;}
+</style>
 {% endblock %}

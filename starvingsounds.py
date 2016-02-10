@@ -138,18 +138,18 @@ class Song(db.Model):
     name = db.StringProperty(required = True)
     artist = db.StringProperty(required = True)
     album = db.StringProperty(required = True)
-    num-wins = db.IntegerProperty(required = False)
-    num-losses = db.IntegerProperty(required = False)
-    win-keys = db.IntegerProperty(required = False)
-    loss-keys = db.StringProperty(required = False)
-    win-percent = db.IntegerProperty(required = True)
+    num_wins = db.IntegerProperty()
+    num_losses = db.IntegerProperty()
+    win_keys = db.IntegerProperty()
+    loss_keys = db.StringProperty()
+    win_percent = db.IntegerProperty()
     created = db.DateTimeProperty(required = True, auto_now = True)
 
 class Album(db.Model):
     name = db.StringProperty(required=True)
     artist = db.StringProperty(required=True)
-    song-names = db.StringProperty()
-    song-keys = db.StringProperty()
+    song_names = db.StringProperty()
+    song_keys = db.StringProperty()
 
 
 

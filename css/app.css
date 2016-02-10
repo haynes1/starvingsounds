@@ -14,7 +14,13 @@ img{height:100%;}
 #maiprofileinfo{top:0;left:0;width:150px;}
 #maiconstantinfo{top:0;right:0;width:225px;}
 #maicontent{position:absolute;left:150px;width:825px;min-height:100vh;z-index:40;background-color:black;}
-
+.page-top{background: black; /* For browsers that do not support gradients */
+	background: -webkit-radial-gradient(#262626 30%,black); /* Safari 5.1 to 6.0 */
+	background: -o-radial-gradient(#262626 30%,black); /* For Opera 11.6 to 12.0 */
+	background: -moz-radial-gradient(#262626 30%,black); /* For Firefox 3.6 to 15 */
+	background: radial-gradient(#262626 30%,black); /* Standard syntax */
+	border-bottom:solid 1px gray;
+}
 #mathand{position:relative;margin-top:50px;height: calc(90vh - 50px);}
 #mathand img{position:absolute;top:20px;left:10%;}
 #play1{position:absolute;padding:10px;left:60%;top:50%;height:20px;width:40px;cursor:pointer;}
@@ -29,7 +35,6 @@ img{height:100%;}
 #ts #demo_profile_pic{margin:10px auto;background:#262626;background-repeat:no-repeat;background-size:100%;height:150px;width:150px;border-radius:50%;border:solid gray 5px;}
 
 /*Profile Styles*/
-#profile{padding-top:100px;}
 
 /*Matchup Styles*/
 #matchupsui{padding-top:50px;max-width:100vw;font-size:80%;text-align:center;}
