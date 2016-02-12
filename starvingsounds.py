@@ -186,7 +186,6 @@ class BaseHandler(webapp2.RequestHandler):
         uid = self.read_secure_cookie('user_id')
         self.user = uid and User.by_id(int(uid))
 
-
 class Home(BaseHandler):
 
     def get(self):
@@ -258,8 +257,6 @@ class Login(BaseHandler):
             msg = 'Invalid login'
             self.response.out.write(msg)
         
-
-
 class Profile(BaseHandler):
     def get(self):
         if self.user:
@@ -305,13 +302,16 @@ class Esf(BaseHandler):
 
         self.response.out.write(msg)
 
-
+class Upload(BaseHandler):
+    def get(self):
+        self.render('upload.html')
 
 application = webapp2.WSGIApplication([
     ('/', Home),
     ('/tempsignup', Signup),
     ('/login', Login),
     ('/profile', Profile),
+    ('/upload', Upload),
     ('/matchups', Matchups),
     ('/emailsignup', Esf)
 ], debug=True)
