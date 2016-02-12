@@ -2,22 +2,126 @@
 
 {% block content %}
 <div id='upload'>
+	<div id='ALBUM_NAMES' class='hidden'>{{albumnames}}</div>
+	<div id='ALBUM_KEYS' class='hidden'></div>
 	<div id='upload-head' class='page-top'>
 
 	</div>
-
+	<div id='song-forms'>
+		<div id='song-form-wrapper-1' class='song-form-wrapper'>
+			<form id='song-form-1' class='song-form'>
+				<input type='hidden' name='get' value='song'>
+				<input id='song-name-1' type='text' name='song-name' class='sfi sfi-1 song-name-input' placeholder='Track Name'>
+				Album:
+				<select id='song-album-1' name='song-album' class='song-album-input' onchange="javascript:createAlbum(1);return false;">
+					<option name='song-album' value='None' selected>None</option>
+					<option name='song-album' value='create-album'>Create Album</option>
+				</select>
+				<input id='song-file-1' type='file' name='song-file' class='sfi sfi-1 song-file-input'>
+				<div id='song-upload-1' class='song-form-upload' onclick="javascript:uploadSong(1);return false;">Upload</div>
+			</form>
+			<div id='song-success-1' class='song-form-success'>
+				Successfully uploaded
+			</div>
+		</div>
+		<div id='create-album'>
+			<form id='album-form'>
+				<div style='float:left'>
+					<div id='album-art-demo'><img id='album-art-demo1'></div><br>
+					Add Album Art<br>
+					<input type="file" name="albumart" onchange="readimg(this);">
+				</div>
+				<div style='float:right'>
+					<input type='hidden' name='get' value='album'>
+					<input type='text' id='album-title' name='albumtitle' placeholder='Album Title'><br>
+					<input type='radio' name='privacy' value='public' checked>Public<br>
+					<input type='radio' name='privacy' value='private'>Private<br>
+				</div>
+				<input id='album-submit' type='button' value='submit' onclick="submitAlbum();">
+			</form>
+		</div>
+	</div>
 	<div id='upload-actions'>
-		<div id='upload-actions-add'>h</div>
+		<div id='upload-actions-add' onclick="javascript:add();return false;"></div>
 		<div id='upload-actions-save'>Save Changes</div>
 		<div id='upload-actions-trash'>h</div>
 	</div>
 </div>
 
 <style>
-	#upload-head{margin-top:40px;height:150px;}
+	#upload-head{position:relative;margin-top:40px;height:150px;}
 	#upload-actions{display:flex;justify-content:space-between;position:fixed;bottom:40px;width:100%;height:70px;background:black;}
 	#upload-actions-save{height:28px;line-height:30px;padding:0 20px;margin-top:15px;background:black;border:outset gray 2px;font-size:12px;cursor:pointer;}
 	#upload-actions-add{margin-top:15px;margin-left:50px;height:30px;line-height:30px;padding:0 10px;background:white;cursor:pointer;}
 	#upload-actions-trash{margin-top:15px;margin-right:50px;height:30px;line-height:30px;padding:0 10px;background:white;cursor:pointer;}
+	.song-form-wrapper{position:relative;margin:20px 50px;border-radius:500px;}
+	#song-forms{position:relative;padding:40px 0;min-height:calc(100vh - 230px);}
+	.song-form{position:relative;;height:80px;padding:0 50px;font-size:12px;}
+	.sfi{margin:30px 5px;}
+	.song-form-upload{position:absolute;top:30px;right:40px;padding:0px 10px;background:#262626;color:white;font-size:12px;border:outset 2px #565656;}
+	.song-form-success{display:none;position:absolute;top:0;left:0;height:100%;width:calc(100% - 100px);padding:0 50px;border-radius:500px;background:#262626;z-index:5;}
+	#create-album{position:absolute;top:0;left:0;width:100%;height:100%;background:black;display:none;}
+	#album-form{margin:80px 120px 40px 120px;}
+	#album-art-demo{height:200px;width:200px;background:#808080;border-radius:50%;}
+	#album-submit{margin-top:300px;}
 </style>
+
+<script>
+function submitAlbum(){
+	var albumtitle=$('#album-title').val()
+	var privacy = $('input[name=privacy]:checked', '#album-form').val();
+	console.log(albumtitle)
+	console.log(privacy)
+	$.post('/upload',{get:'album',albumtitle:albumtitle,privacy:privacy}, function(data){
+		console.log(data)
+	})
+}
+
+function createAlbum(index){
+	var selected = $('#song-album-'+index).find(":selected").val();
+	if(selected=='create-album'){
+		$('#create-album').css('display','block')
+	}
+}
+
+function adInput(index){
+	next_input = $('#song-form-wrapper-'+index).html()
+	ni = index + 1
+	ni_temp = String(next_input).split(String(index)).join(String(ni))
+	nin = "<div id='song-form-wrapper-"+ni+"' class='song-form-wrapper'>"+ni_temp+"</div>"
+	$('#song-forms').append(nin)
+	$('#song-success-'+index).css('display','block')
+}
+
+function uploadSong(index){
+	var songname=$('#song-name-'+index).val()
+	var albumname = $('#song-album-'+ index).find(":selected").text();
+	$.post('/upload', {get:'song',songname:songname,albumname:albumname}, function(data){
+		console.log(data)
+	});
+	adInput(index)
+}
+
+function testInputs(){
+	index = $('#'+event.target.id).attr('id').split('-')[2]
+	var num = 0
+	$('.sfi-'+index).each(function(index){
+		if($(this).val() != ''){
+			num = num + 1
+		}
+	})
+	console.log(num)
+	if(num == 2){$('#song-upload-'+String(index)).css('display','block');
+		console.log('wtf')}
+}
+
+function addAlbumsToForm(){
+	albumnames = $('#ALBUM_NAMES').html()
+}
+
+$( document ).ready(function() {
+    addAlbumsToForm()
+    $('.sfi').bind("keyup change", function(){testInputs()})
+});
+</script>
 {% endblock %}

@@ -143,6 +143,7 @@ class Song(db.Model):
     win_keys = db.IntegerProperty()
     loss_keys = db.StringProperty()
     win_percent = db.IntegerProperty()
+    rank = db.IntegerProperty()
     created = db.DateTimeProperty(required = True, auto_now = True)
 
 class Album(db.Model):
@@ -150,6 +151,7 @@ class Album(db.Model):
     artist = db.StringProperty(required=True)
     song_names = db.StringProperty()
     song_keys = db.StringProperty()
+    privacy = db.StringProperty()
 
 
 
@@ -185,6 +187,23 @@ class BaseHandler(webapp2.RequestHandler):
         webapp2.RequestHandler.initialize(self, *a, **kw)
         uid = self.read_secure_cookie('user_id')
         self.user = uid and User.by_id(int(uid))
+
+    def getAlbums(self, user):
+        ret='album1&&&album2&&&album3'
+        albumquery = GqlQuery("SELECT name FROM Album WHERE artist = :1", user)
+        tempqueryrow = albumquery.get()
+        if tempqueryrow is None:
+            ret = 'None'
+        return ret
+
+    def getSongs(self, user):
+        ret='song1;;;song2;;;song3'
+        albumquery = GqlQuery("SELECT name FROM Song WHERE artist = :1", user)
+        tempqueryrow = albumquery.get()
+        if tempqueryrow is None:
+            ret = 'None&&&None&&&None'
+        return ret
+        
 
 class Home(BaseHandler):
 
@@ -260,7 +279,14 @@ class Login(BaseHandler):
 class Profile(BaseHandler):
     def get(self):
         if self.user:
-            self.render('profile.html')
+            albumnames = self.getAlbums(self.user.name)
+            songnames = self.getSongs(self.user.name)
+            logging.error(songnames)
+            params = dict(name = self.user.name,
+                      email = self.user.email,
+                      albumnames = albumnames,
+                      songnames = songnames)
+            self.render('profile.html', **params)
         else:
             self.redirect('/')
 
@@ -303,8 +329,53 @@ class Esf(BaseHandler):
         self.response.out.write(msg)
 
 class Upload(BaseHandler):
+    def uploadSong(self,songname,albumname):
+        #see if albumname is None
+        if albumname == 'None':
+            albumquery = GqlQuery("SELECT * FROM Album WHERE name = :1 AND artist = :2", albumname,self.user.name)
+            tempqueryrow = albumquery.get()
+            if tempqueryrow is None:
+                entry = Album(name='no-album',artist=self.user.name)
+                entry.put()
+            entry = Song(name=songname,artist=self.user.name,album='no-album')
+            entry.put()
+
     def get(self):
-        self.render('upload.html')
+        if self.user: 
+            #get album names
+            albumnames = self.getAlbums(self.user.key())
+            logging.error(albumnames)
+            params = dict(name = self.user.name,
+                      email = self.user.email,
+                      albumnames = albumnames)
+            self.render('upload.html', **params)
+        else:
+            self.redirect('/')
+
+    def post(self):
+        get = self.request.get('get')
+        user = self.request.get('user')
+        if get == 'album' and user == 'self':
+            self.response.out.write('album names&&&album keys')
+        elif get == 'song':
+            trackname = self.request.get('songname')
+            albumname = self.request.get('albumname')
+            logging.error(str(albumname))
+            self.uploadSong(trackname,albumname)
+            self.response.out.write(albumname)
+        elif get == 'album':
+            albumname = self.request.get('albumtitle')
+            privacy = self.request.get('privacy')
+            albumquery = GqlQuery("SELECT * FROM Album WHERE name = :1 AND artist = :2", albumname,self.user.name)
+            tempqueryrow = albumquery.get()
+            if tempqueryrow is None:
+                entry = Album(name=albumname,artist=self.user.name)
+                entry.put()
+                self.response.out.write(albumname)
+            else:
+                self.response.out.write('album already made')
+
+        
 
 application = webapp2.WSGIApplication([
     ('/', Home),

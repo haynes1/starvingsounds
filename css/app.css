@@ -1,5 +1,6 @@
 html, body{margin:0;background: black;color: white;font-family: 'Open Sans', sans-serif;line-height:150%;}#maibordercolor{position:fixed;z-index:0;width:100vw;height:calc(100vh - 80px);background:#808080;border-top:solid 40px #404040;border-bottom:solid 40px #404040;}
 img{height:100%;}
+.hidden{display:none;}
 #maiheader{position:fixed;width:100vw;height:40px;top:0;background:#404040;z-index:50;}
 #maiheadlogo{position:absolute;top:0;left:0;height:40px;width:40px;}
 #mainav_wrapper{position:absolute;height:40px;font-size:16px;font-weight:bold;z-index:55;}

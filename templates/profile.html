@@ -2,9 +2,12 @@
 
 {% block content %}
 <div id='profile'>
+	<div id='ALBUM_NAMES' class='hidden'>{{albumnames}}</div>
+	<div id='ALBUM_KEYS' class='hidden'></div>
+	<div id='SONG_NAMES' class='hidden'>{{songnames}}</div>
 	<div id='profile-head' class='page-top'>
 		<div id='profile-head-top'>
-			Artist Name's Music Songs (x) Projects (x)
+			{{name}}'s Music Songs (x) Projects (x)
 		</div>
 		<div id='profile-head-content'>
 			<div id='profile-head-content-info'>
@@ -25,6 +28,28 @@
 	</div>
 
 	<div id='table-wrapper'>
+		<div id='tr-pattern'>
+			<tr id='st-titles'>
+				<td id='st-play' class='st-short'>P</td>
+				<td id='st-plus' class='st-short'></td>
+				<td id='st-num' class='st-short'>NUM</td>
+				<td id='st-name'>SONGNAME</td>
+				<td id='st-rank' class='st-end'></td>
+				<td id='st-winp' class='st-end'></td>
+				<td id='elipses' class='st-end'>...</td>
+			</tr>
+		</div>
+		<table id='songtable'>
+			<tr id='st-titles'>
+				<td id='st-play' class='st-short'></td>
+				<td id='st-plus' class='st-short'></td>
+				<td id='st-num' class='st-short'></td>
+				<td id='st-name'>Song</td>
+				<td id='st-rank' class='st-end'>Rank</td>
+				<td id='st-winp' class='st-end'>Win%</td>
+				<td id='elipses' class='st-end'></td>
+			</tr>
+		</table>
 	</div>
 </div>
 
@@ -41,5 +66,24 @@
 	.profile-head-album{height:50px;width:50px;border-radius:50%;border:solid 3px gray;margin:7px 0 0 20px;background:#d9d9d9;}
 	#album-current{position:absolute;bottom:10px;height:180px;width:180px;}
 	#album-3{margin-left:230px;}
+	#songtable{margin:20px 80px 20px;width:calc(100% - 160px);}
+	#st-titles{color:#808080 !important;}
+	.st-short{width:30px;}
+	.st-end{width:40px;}
 </style>
+
+<script>
+	function showSongs(){
+		sns = $('#SONG_NAMES').html()
+		songs = String(sns).split(';;;')
+		nrow = 
+		for(i=0;i<songs.length;i++){
+			con
+		}
+	}
+
+	$( document ).ready(function() {
+		showSongs()
+	});
+</script>
 {% endblock %}
