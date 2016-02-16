@@ -58,7 +58,7 @@
 	#song-forms{position:relative;padding:40px 0;min-height:calc(100vh - 230px);}
 	.song-form{position:relative;;height:80px;padding:0 50px;font-size:12px;}
 	.sfi{margin:30px 5px;}
-	.song-form-upload{position:absolute;top:30px;right:40px;padding:0px 10px;background:#262626;color:white;font-size:12px;border:outset 2px #565656;}
+	.song-form-upload{cursor:pointer;position:absolute;top:30px;right:40px;padding:0px 10px;background:#262626;color:white;font-size:12px;border:outset 2px #565656;}
 	.song-form-success{display:none;position:absolute;top:0;left:0;height:100%;width:calc(100% - 100px);padding:0 50px;border-radius:500px;background:#262626;z-index:5;}
 	#create-album{position:absolute;top:0;left:0;width:100%;height:100%;background:black;display:none;}
 	#album-form{margin:80px 120px 40px 120px;}
@@ -84,22 +84,25 @@ function createAlbum(index){
 	}
 }
 
-function adInput(index){
+function adInput(index, data){
+	console.log(data)
 	next_input = $('#song-form-wrapper-'+index).html()
 	ni = index + 1
 	ni_temp = String(next_input).split(String(index)).join(String(ni))
 	nin = "<div id='song-form-wrapper-"+ni+"' class='song-form-wrapper'>"+ni_temp+"</div>"
 	$('#song-forms').append(nin)
 	$('#song-success-'+index).css('display','block')
+	$('#song-success-'+index).html(data)
 }
 
 function uploadSong(index){
+	console.log('???')
 	var songname=$('#song-name-'+index).val()
 	var albumname = $('#song-album-'+ index).find(":selected").text();
 	$.post('/upload', {get:'song',songname:songname,albumname:albumname}, function(data){
-		console.log(data)
+		songs = data.split('\n')
+		adInput(index, data[0])
 	});
-	adInput(index)
 }
 
 function testInputs(){
@@ -111,8 +114,7 @@ function testInputs(){
 		}
 	})
 	console.log(num)
-	if(num == 2){$('#song-upload-'+String(index)).css('display','block');
-		console.log('wtf')}
+	if(num == 2){$('#song-upload-'+String(index)).css('display','block')};
 }
 
 function addAlbumsToForm(){

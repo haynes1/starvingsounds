@@ -30,12 +30,12 @@
 	<div id='table-wrapper'>
 		<div id='tr-pattern'>
 			<tr id='st-titles'>
-				<td id='st-play' class='st-short'>P</td>
-				<td id='st-plus' class='st-short'></td>
+				<td id='st-play' class='st-short'>pb</td>
+				<td id='st-plus' class='st-short'>+</td>
 				<td id='st-num' class='st-short'>NUM</td>
 				<td id='st-name'>SONGNAME</td>
-				<td id='st-rank' class='st-end'></td>
-				<td id='st-winp' class='st-end'></td>
+				<td id='st-rank' class='st-end'>RANK</td>
+				<td id='st-winp' class='st-end'>WINP</td>
 				<td id='elipses' class='st-end'>...</td>
 			</tr>
 		</div>
@@ -51,6 +51,7 @@
 			</tr>
 		</table>
 	</div>
+	<div id='upload-wrapper'><a href='/upload' id='upload-link'>Upload Songs</a></div>
 </div>
 
 <style>
@@ -70,15 +71,30 @@
 	#st-titles{color:#808080 !important;}
 	.st-short{width:30px;}
 	.st-end{width:40px;}
+	#tr-pattern{display:none;}
+	#upload-wrapper{position:fixed;top:40px;background:black;}
+	#upload-link{display:block;margin:0 auto;width:275px;background:cyan;color:white;cursor:pointer;text-align:center;}
 </style>
 
 <script>
 	function showSongs(){
 		sns = $('#SONG_NAMES').html()
-		songs = String(sns).split(';;;')
-		nrow = 
-		for(i=0;i<songs.length;i++){
-			con
+		songarray = String(sns).split('\n')
+		var table = document.getElementById('songtable');
+		for(i=0;i<songarray.length;i++){
+			songdata = songarray[i].split('$$$')
+			var row = table.insertRow((i+1));
+			var cell1 = row.insertCell(0);
+    		var cell2 = row.insertCell(1);
+    		var cell3 = row.insertCell(2);
+    		var cell4 = row.insertCell(3);
+    		var cell5 = row.insertCell(4);
+    		var cell6 = row.insertCell(5);
+    		var cell7 = row.insertCell(6);
+    		cell4.innerHTML = songdata[0];
+    		cell5.innerHTML = songdata[1];
+    		cell6.innerHTML = songdata[2];
+			
 		}
 	}
 

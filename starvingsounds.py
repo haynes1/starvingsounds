@@ -145,6 +145,7 @@ class Song(db.Model):
     win_percent = db.IntegerProperty()
     rank = db.IntegerProperty()
     created = db.DateTimeProperty(required = True, auto_now = True)
+        
 
 class Album(db.Model):
     name = db.StringProperty(required=True)
@@ -198,10 +199,17 @@ class BaseHandler(webapp2.RequestHandler):
 
     def getSongs(self, user):
         ret='song1;;;song2;;;song3'
-        albumquery = GqlQuery("SELECT name FROM Song WHERE artist = :1", user)
-        tempqueryrow = albumquery.get()
-        if tempqueryrow is None:
-            ret = 'None&&&None&&&None'
+        songquery = GqlQuery("SELECT name FROM Song WHERE artist = :1", user)
+        tempqueryrow = songquery.fetch(20)
+        if len(tempqueryrow) == 0:
+            logging.error('HAHAHAHAHAHAHAHAHA')
+            ret = """Caught up in the process$$$1,073$$$98%\nGenius$$$968$$$98%\nNeezus$$$3,621$$$96%\nMy Life$$$4,802$$$96%\nFeeling Some Way$$$2,331$$$95%\nThat Guala$$$4,873$$$95%\nState of Mind$$$3,880$$$94%\nFree Man$$$5,003$$$94%"""
+        else:
+            songstring=''
+            for r in tempqueryrow:
+                logging.error(r)
+                songstring = songstring  + r.name + '\n'
+            ret = songstring      
         return ret
         
 
@@ -238,28 +246,42 @@ class Matchups(BaseHandler):
 
 class Signup(BaseHandler):
     def get(self):
-        self.render('signup.html')
+        if self.user:
+            self.redirect('/profile')
+        else:
+            self.render('signupwall.html')
+
 
     def post(self):
-        name = self.request.get('name')
-        email = self.request.get('email')
-        city = self.request.get('city')
-        state = self.request.get('state')
-        password = self.request.get('password')
-        #ensure that the user is a new user
-        namequery = GqlQuery("SELECT * FROM User WHERE name = :1", name)
-        namequeryrow = namequery.get()
-        emailquery = GqlQuery("SELECT * FROM User WHERE email = :1", email)
-        emailqueryrow = emailquery.get()
-
-        if namequeryrow is None and emailqueryrow is None:
-            if name and email and city and state and password:
-                u = User.register(name,email,city,state,password)
-                u.put()
-                self.login(u)
-                self.response.out.write('success')
+        key = self.request.get('key')
+        logging.error(key)
+        if key == 'is you is':
+            self.render('signup.html')
+        elif key != '':
+            self.render('signupwall.html')
         else:
-            self.response.out.write('failure')
+            logging.error('+++++++++++++COMMING IN')
+            name = self.request.get('name')
+            email = self.request.get('email')
+            city = self.request.get('city')
+            state = self.request.get('state')
+            password = self.request.get('password')
+            #ensure that the user is a new user
+            namequery = GqlQuery("SELECT * FROM User WHERE name = :1", name)
+            namequeryrow = namequery.get()
+            emailquery = GqlQuery("SELECT * FROM User WHERE email = :1", email)
+            emailqueryrow = emailquery.get()
+            logging.error('+++++++++++++COMMING IN 1')
+            if namequeryrow is None and emailqueryrow is None:
+                logging.error('+++++++++++++COMMING IN MADE IT')
+                if name and email and city and state and password:
+                    u = User.register(name,email,city,state,password)
+                    u.put()
+                    self.login(u)
+                    self.response.out.write('success')
+                    self.redirect('/profile')
+            else:
+                self.response.out.write('failure')
 
 class Login(BaseHandler):
     def get(self):
@@ -339,6 +361,7 @@ class Upload(BaseHandler):
                 entry.put()
             entry = Song(name=songname,artist=self.user.name,album='no-album')
             entry.put()
+            return 'success'
 
     def get(self):
         if self.user: 
@@ -360,9 +383,12 @@ class Upload(BaseHandler):
         elif get == 'song':
             trackname = self.request.get('songname')
             albumname = self.request.get('albumname')
-            logging.error(str(albumname))
-            self.uploadSong(trackname,albumname)
-            self.response.out.write(albumname)
+            upsuccess = self.uploadSong(trackname,albumname)
+            if upsuccess == 'success':
+                songs = self.getSongs(self.user.name)
+                logging.error(songs)
+                self.response.out.write(songs)
+
         elif get == 'album':
             albumname = self.request.get('albumtitle')
             privacy = self.request.get('privacy')

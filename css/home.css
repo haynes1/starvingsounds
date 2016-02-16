@@ -8,7 +8,7 @@ img{height:100%;}
 #openercontent{position: relative;z-index:4}
 #dopener_content h1{font-size:60px;}
 #dopener_content p{font-size:26px;line-height:125%;}
-#signupreveal{cursor:pointer;background:#4d4d4d;border:groove 2px black}
+#signupreveal{display:block;text-decoration:none;cursor:pointer;background:#4d4d4d;border:groove 2px black}
 #signupsubmit{cursor:pointer;margin:0 auto;margin-top:20px;background-color:#03B1E9;width:100px;text-align:center;padding:5px;}
 #signupform_wrapper{background-color:black;}
 .signupinput{background-color:#262626;width:100%;border:none;color:white;height:30px;margin:1px 0;}

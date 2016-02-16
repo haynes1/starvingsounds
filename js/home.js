@@ -8,32 +8,6 @@ function validDate(date){
 }
 
 
-function signupShowHide(i){
-	state = $('#signupform_wrapper').attr('value')
-	width = $(window).width()
-	if (width > 420){ //desktop animate
-		if (state != 'contracted'){ //contract it
-			$('#signupform_wrapper').animate({height: '0px'}, 700);
-			$('#signupform_wrapper').attr('value','contracted')
-			$('#signupreveal').html('Signup')
-		}else{ //expand it
-			$('#signupform_wrapper').animate({height: '200px'}, 700);
-			$('#signupform_wrapper').attr('value','expanded')
-			$('#signupreveal').html('Close Signup')
-		}
-	} else { //mobile animate
-		if (state != 'contracted'){ //contract it
-			$('#signupform_wrapper').animate({top: '105vh'}, 700);
-			$('#signupform_wrapper').attr('value','contracted')
-			$('#signupreveal').html('Signup')
-		}else{ //expand it
-			$('#signupform_wrapper').animate({top: '0vh'}, 700);
-			$('#signupform_wrapper').attr('value','expanded')
-			$('#signupreveal').html('Close Signup')
-		}
-	}
-}
-
 function signupSuccess(){
 	$('#sformstuff').hide()
 	$('#signupsuccess').show()
