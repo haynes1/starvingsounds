@@ -388,7 +388,6 @@ class Upload(BaseHandler):
                 songs = self.getSongs(self.user.name)
                 logging.error(songs)
                 self.response.out.write(songs)
-                
 
         elif get == 'album':
             albumname = self.request.get('albumtitle')
