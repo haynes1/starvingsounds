@@ -17,11 +17,12 @@ import cgi
 from google.appengine.ext.webapp.util import run_wsgi_app
 
 
-from google.appengine.ext import db
+from google.appengine.ext import ndb
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 from google.appengine.ext.db import GqlQuery
 from google.appengine.api import mail
+from google.appengine.api import images
 
 #from oauth2client.client import flow_from_clientsecrets
 #from oauth2client.client import FlowExchangeError
@@ -83,17 +84,19 @@ def h_valid_pw(email, password, h):
 
 #--------------------------DB Classes----------------------------------------
 
-class User(db.Model):
-    name = db.StringProperty(required = True)
-    email = db.StringProperty(required = True)
-    pw_hash = db.StringProperty(required = True)
-    city = db.StringProperty(required = False)
-    state = db.StringProperty(required = False)
-    age = db.IntegerProperty(required = False)
-    gender = db.StringProperty(required = False)
-    created = db.DateTimeProperty(required = True, auto_now = True)
-    last_modified = db.DateTimeProperty(required = True, auto_now = True)
-    token = db.StringProperty()
+class User(ndb.Model):
+    name = ndb.StringProperty(required = True)
+    email = ndb.StringProperty(required = True)
+    pw_hash = ndb.StringProperty(required = True)
+    city = ndb.StringProperty(required = False)
+    state = ndb.StringProperty(required = False)
+    age = ndb.IntegerProperty(required = False)
+    quote = ndb.StringProperty(required=False)
+    gender = ndb.StringProperty(required = False)
+    created = ndb.DateTimeProperty(required = True, auto_now = True)
+    last_modified = ndb.DateTimeProperty(required = True, auto_now = True)
+    token = ndb.StringProperty()
+    profile_picture = ndb.BlobProperty()
 
     @classmethod
     def by_id(cls, uid):
@@ -110,12 +113,14 @@ class User(db.Model):
         return u
 
     @classmethod
-    def register(cls,name, email, city, state, pw):
+    def register(cls,name, email, quote, city, state, pw, img):
         pw_hash = make_pw_hash(name, pw)
         return cls( name = name,
                     email = email,
                     city = city,
+                    quote = quote,
                     state = state,
+                    profile_picture = img,
                     pw_hash = pw_hash)
 
     @classmethod
@@ -124,35 +129,35 @@ class User(db.Model):
         if u:
             return u
 
-class EmailSignee(db.Model):
-    created = db.DateTimeProperty(required = True, auto_now = True)
-    email = db.StringProperty(required = True)
-    name = db.StringProperty(required = True)
+class EmailSignee(ndb.Model):
+    created = ndb.DateTimeProperty(required = True, auto_now = True)
+    email = ndb.StringProperty(required = True)
+    name = ndb.StringProperty(required = True)
 
     @classmethod
     def by_email(cls, email):
         u = cls.all().filter('email =', email).get()
         return u
 
-class Song(db.Model):
-    name = db.StringProperty(required = True)
-    artist = db.StringProperty(required = True)
-    album = db.StringProperty(required = True)
-    num_wins = db.IntegerProperty()
-    num_losses = db.IntegerProperty()
-    win_keys = db.IntegerProperty()
-    loss_keys = db.StringProperty()
-    win_percent = db.IntegerProperty()
-    rank = db.IntegerProperty()
-    created = db.DateTimeProperty(required = True, auto_now = True)
+class Song(ndb.Model):
+    name = ndb.StringProperty(required = True)
+    artist = ndb.StringProperty(required = True)
+    album = ndb.StringProperty(required = True)
+    num_wins = ndb.IntegerProperty()
+    num_losses = ndb.IntegerProperty()
+    win_keys = ndb.IntegerProperty()
+    loss_keys = ndb.StringProperty()
+    win_percent = ndb.IntegerProperty()
+    rank = ndb.IntegerProperty()
+    created = ndb.DateTimeProperty(required = True, auto_now = True)
         
 
-class Album(db.Model):
-    name = db.StringProperty(required=True)
-    artist = db.StringProperty(required=True)
-    song_names = db.StringProperty()
-    song_keys = db.StringProperty()
-    privacy = db.StringProperty()
+class Album(ndb.Model):
+    name = ndb.StringProperty(required=True)
+    artist = ndb.StringProperty(required=True)
+    song_names = ndb.StringProperty()
+    song_keys = ndb.StringProperty()
+    privacy = ndb.StringProperty()
 
 
 
@@ -179,7 +184,7 @@ class BaseHandler(webapp2.RequestHandler):
         return cookie_val and check_secure_val(cookie_val)
 
     def login(self, user):
-        self.set_secure_cookie('user_id', str(user.key().id()))
+        self.set_secure_cookie('user_id', str(user.key.id()))
 
     def logout(self):
         self.response.headers.add_header('Set-Cookie', 'user_id=; Path=/')
@@ -189,9 +194,18 @@ class BaseHandler(webapp2.RequestHandler):
         uid = self.read_secure_cookie('user_id')
         self.user = uid and User.by_id(int(uid))
 
+    def getArtistInfo(self, user):
+        artistinfo = dict(artistname = user.name,
+                artistprofilepic = user.profile_picture,
+                artistquote = user.quote,
+                artistcity = user.city,
+                artiststate = user.state)
+        return artistinfo
+
+
     def getAlbums(self, user):
         ret='album1&&&album2&&&album3'
-        albumquery = GqlQuery("SELECT name FROM Album WHERE artist = :1", user)
+        albumquery = ndb.gql("SELECT name FROM Album WHERE artist = :1", user)
         tempqueryrow = albumquery.get()
         if tempqueryrow is None:
             ret = 'None'
@@ -199,10 +213,9 @@ class BaseHandler(webapp2.RequestHandler):
 
     def getSongs(self, user):
         ret='song1;;;song2;;;song3'
-        songquery = GqlQuery("SELECT name FROM Song WHERE artist = :1", user)
+        songquery = ndb.gql("SELECT name FROM Song WHERE artist = :1", user)
         tempqueryrow = songquery.fetch(20)
         if len(tempqueryrow) == 0:
-            logging.error('HAHAHAHAHAHAHAHAHA')
             ret = """Caught up in the process$$$1,073$$$98%\nGenius$$$968$$$98%\nNeezus$$$3,621$$$96%\nMy Life$$$4,802$$$96%\nFeeling Some Way$$$2,331$$$95%\nThat Guala$$$4,873$$$95%\nState of Mind$$$3,880$$$94%\nFree Man$$$5,003$$$94%"""
         else:
             songstring=''
@@ -254,35 +267,65 @@ class Signup(BaseHandler):
 
     def post(self):
         key = self.request.get('key')
-        logging.error(key)
-        if key == 'is you is':
-            self.render('signup.html')
+        t = self.request.get('formtype')
+        if key == 'nextlevel':
+            upload_url = blobstore.create_upload_url('/upload')
+            self.render('signup.html',upurl = upload_url)
         elif key != '':
             self.render('signupwall.html')
         else:
-            logging.error('+++++++++++++COMMING IN')
-            name = self.request.get('name')
-            email = self.request.get('email')
-            city = self.request.get('city')
-            state = self.request.get('state')
-            password = self.request.get('password')
-            #ensure that the user is a new user
-            namequery = GqlQuery("SELECT * FROM User WHERE name = :1", name)
-            namequeryrow = namequery.get()
-            emailquery = GqlQuery("SELECT * FROM User WHERE email = :1", email)
-            emailqueryrow = emailquery.get()
-            logging.error('+++++++++++++COMMING IN 1')
-            if namequeryrow is None and emailqueryrow is None:
-                logging.error('+++++++++++++COMMING IN MADE IT')
-                if name and email and city and state and password:
-                    u = User.register(name,email,city,state,password)
-                    u.put()
-                    self.login(u)
-                    self.response.out.write('success')
-                    self.redirect('/profile')
-            else:
-                self.response.out.write('failure')
+            if t == 'udata':
+                name = self.request.get('name')
+                email = self.request.get('email')
+                city = self.request.get('city')
+                quote = self.request.get('quote')
+                state = self.request.get('state')
+                password = self.request.get('password')
+                pic = str(self.request.get('profilepic'))
+                #ensure that the user is a new user
+                namequery = ndb.gql("SELECT * FROM User WHERE name = :1", name)
+                namequeryrow = namequery.get()
+                emailquery = ndb.gql("SELECT * FROM User WHERE email = :1", email)
+                emailqueryrow = emailquery.get()
+                if namequeryrow is None and emailqueryrow is None:
+                    if name and email and city and state and password:
+                        u = User.register(name,email,quote,city,state,password,pic)
+                        u.put()
+                        self.login(u)
+                        self.response.out.write('success')
+                else:
+                    self.response.out.write('failure')
+            elif t == 'profilepic':
+                self.response.out.write('server doing the thing')
 
+class SignupHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandler):
+    def get(self):
+        self.redirect('/')
+    def post(self):
+        upload_blob = self.get_uploads()
+        blob_key = upload_blob[0].key()
+        logging.error
+        name = self.request.get('name')
+        email = self.request.get('email')
+        city = self.request.get('city')
+        state = self.request.get('state')
+        password = self.request.get('password')
+        pic = str(self.request.get('profilepic'))
+        #ensure that the user is a new user
+        namequery = ndb.gql("SELECT * FROM User WHERE name = :1", name)
+        namequeryrow = namequery.get()
+        emailquery = ndb.gql("SELECT * FROM User WHERE email = :1", email)
+        emailqueryrow = emailquery.get()
+        if namequeryrow is None and emailqueryrow is None:
+            if name and email and city and state and password:
+                u = User.register(name,email,city,state,password)
+                u.put()
+                self.login(u)
+                self.response.out.write('success')
+        else:
+            self.response.out.write('failure')
+
+                
 class Login(BaseHandler):
     def get(self):
         self.render('login.html')
@@ -301,13 +344,12 @@ class Login(BaseHandler):
 class Profile(BaseHandler):
     def get(self):
         if self.user:
+            params = self.getArtistInfo(self.user) 
             albumnames = self.getAlbums(self.user.name)
             songnames = self.getSongs(self.user.name)
             logging.error(songnames)
-            params = dict(name = self.user.name,
-                      email = self.user.email,
-                      albumnames = albumnames,
-                      songnames = songnames)
+            musicparams = dict(albumnames = albumnames,songnames = songnames)
+            params.update(musicparams)
             self.render('profile.html', **params)
         else:
             self.redirect('/')
@@ -354,7 +396,7 @@ class Upload(BaseHandler):
     def uploadSong(self,songname,albumname):
         #see if albumname is None
         if albumname == 'None':
-            albumquery = GqlQuery("SELECT * FROM Album WHERE name = :1 AND artist = :2", albumname,self.user.name)
+            albumquery = ndb.gql("SELECT * FROM Album WHERE name = :1 AND artist = :2", albumname,self.user.name)
             tempqueryrow = albumquery.get()
             if tempqueryrow is None:
                 entry = Album(name='no-album',artist=self.user.name)
@@ -392,7 +434,7 @@ class Upload(BaseHandler):
         elif get == 'album':
             albumname = self.request.get('albumtitle')
             privacy = self.request.get('privacy')
-            albumquery = GqlQuery("SELECT * FROM Album WHERE name = :1 AND artist = :2", albumname,self.user.name)
+            albumquery = ndb.gql("SELECT * FROM Album WHERE name = :1 AND artist = :2", albumname,self.user.name)
             tempqueryrow = albumquery.get()
             if tempqueryrow is None:
                 entry = Album(name=albumname,artist=self.user.name)
@@ -406,6 +448,7 @@ class Upload(BaseHandler):
 application = webapp2.WSGIApplication([
     ('/', Home),
     ('/tempsignup', Signup),
+    ('/signuphandles', SignupHandler),
     ('/login', Login),
     ('/profile', Profile),
     ('/upload', Upload),

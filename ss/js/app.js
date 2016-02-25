@@ -1,3 +1,11 @@
+function scroller(id,classname){
+  $('.'+classname).each(function(index){
+    $(this).css('display','none')
+  })
+  $('#'+id).css('display','block')
+  fadeIn(id, 'block')
+}
+
 function navShowHide(i){
 	state = $('#mainav_wrapper').attr('value')
 	if (state != 'contracted' || i == 'close'){ //contract nav
