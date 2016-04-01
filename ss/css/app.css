@@ -13,7 +13,7 @@ img{height:100%;}
 #maidesktop_wrapper{position:fixed;left:0;top:0;width:1280px;}
 .maideskonly{position:fixed;background-color:#262626;height:100vh;}
 #maiprofileinfo{top:0;left:0;width:150px;padding:80px 20px;text-align:center;}
-#maiconstantinfo{top:0;right:0;width:265px;}
+#maiconstantinfo{top:0;right:0;width:215px;padding:75px 25px;}
 #maicontent{position:absolute;left:150px;width:825px;min-height:100vh;z-index:40;background-color:black;}
 .page-top{background: black; /* For browsers that do not support gradients */
 	background: -webkit-radial-gradient(#262626 30%,black); /* Safari 5.1 to 6.0 */

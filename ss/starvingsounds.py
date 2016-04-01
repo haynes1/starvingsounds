@@ -443,7 +443,9 @@ class Upload(BaseHandler):
             else:
                 self.response.out.write('album already made')
 
-        
+class Mockup(BaseHandler):
+    def get(self):
+        self.render('mockupbase.html')       
 
 application = webapp2.WSGIApplication([
     ('/', Home),
@@ -453,5 +455,6 @@ application = webapp2.WSGIApplication([
     ('/profile', Profile),
     ('/upload', Upload),
     ('/matchups', Matchups),
-    ('/emailsignup', Esf)
+    ('/emailsignup', Esf),
+    ('/mockup',Mockup)
 ], debug=True)
