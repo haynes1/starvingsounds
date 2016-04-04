@@ -1,5 +1,6 @@
 html, body{margin:0;background:#464646;color:white;font-family: 'Open Sans', sans-serif;line-height:150%}
 img{height:100%;}
+.tw{color:white;}
 .tg{color:#575757;}
 .tb{color:#05b1e9;}
 .bckgbar{z-index:100;position:fixed;left:0;width:100vw;height:50px;background:#363535;}
@@ -32,7 +33,7 @@ img{height:100%;}
 #lsp-5{text-align:center;}
 #ls-nav ul{margin:20px 0;padding:0;text-align:center;list-style:none}
 #ls-nav ul li{cursor:pointer;}
-#content{background:black;width:730px;}
+#content{position:relative;background:black;width:730px;}
 #rightside{background:#1c1c1c;width:330px;padding:0 10px;font-size:85%;}
 #rs-1{margin:20px 0 40px calc(100% - 200px);width:200px;height:50px;}
 #rs1-1{display:flex;justify-content:space-between;}
