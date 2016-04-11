@@ -1,5 +1,28 @@
 html, body{margin:0;background: black;color: white;font-family: 'Open Sans', sans-serif;line-height:150%;}#maibordercolor{position:fixed;z-index:0;width:100vw;height:calc(100vh - 80px);background:#808080;border-top:solid 40px #404040;border-bottom:solid 40px #404040;}
 img{height:100%;}
+input::-webkit-input-placeholder{color:#999999;}
+textarea{height:auto !important;}
+
+.row{max-width:1280px;position:relative;margin:25px auto;width:90vw;display:flex;flex-direction:row;justify-content:space-between;flex-wrap:wrap;}
+#esf-form-wrapper{margin:50px 0;}
+#esf-input{width:calc(100% - 200px);background:#262626;color:white;padding:10px;text-align:center;font-size:16px;border:solid 2px black;}
+#esf-submit{display:inline-block;background:#737373;width:70px;text-align:center;height:38px;line-height:38px;padding:0 20px;border:solid 2px black;cursor:pointer;}
+#esf-success{background:#262626;padding:25px;text-align:center;display:none;}
+#esf-success h3{margin:0 auto 20px;}
+#esf-success-check{display:block;margin:20px auto;}
+#signupback{position:relative;min-height:90vh;background:url('/images/openerback.png');background-size:auto 100%;padding:5vh 5vw;display:flex;flex-wrap:wrap;}
+#signup-text{width:700px;margin-right:50px;padding-top:100px;}
+#signup-form-wrapper{position:relative;width:362px;}
+#signup-form-wrapper-translucent{background:#262626;border:outset 5px  #333333;opacity:.9;height:calc(100% - 10px);width:calc(100% - 10px);position:absolute;z-index:0;}
+#signup-form-wrapper-opaque{position:relative;padding:25px;z-index:5;}
+.formbutton{background:#49B2E6;border:none;cursor:pointer;width:100%;height:29px;font-size:13px;font-weight:bold;}
+.nextbutton{float:right;clear:both;width:70px;height:29px;}
+.small-input{width:calc(100% - 16px);height:29px;background:#404040;border:none;color:white;padding:0 8px;margin-bottom:10px;}
+#ppic-form{display:none;}
+#demo_profile_pic{margin:10px auto;background:#262626;background-repeat:no-repeat;background-size:100%;height:150px;width:150px;border-radius:50%;border:solid gray 5px;}
+
+
+
 .hidden{display:none;}
 #maiheader{position:fixed;width:100vw;height:40px;top:0;background:#404040;z-index:50;}
 #maiheadlogo{position:absolute;top:0;left:0;height:40px;width:40px;}
@@ -31,9 +54,7 @@ img{height:100%;}
 #acontrol{display:block;margin:0;padding:0;width:100%;}
 #alert{position:fixed;padding:5px 0;top:40px;width:100%;background:#053d48;color:#03b1e9;text-align:center;opacity:0;}
 
-/*Temp Signup Styles*/
-#ts{text-align:center;}
-#ts #demo_profile_pic{margin:10px auto;background:#262626;background-repeat:no-repeat;background-size:100%;height:150px;width:150px;border-radius:50%;border:solid gray 5px;}
+
 
 /*Profile Styles*/
 

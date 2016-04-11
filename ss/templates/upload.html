@@ -9,7 +9,7 @@
 	</div>
 	<div id='song-forms'>
 		<div id='song-form-wrapper-1' class='song-form-wrapper'>
-			<form id='song-form-1' class='song-form'>
+			<form id='song-form-1' class='song-form' action='{{upurl}}'>
 				<input type='hidden' name='get' value='song'>
 				<input id='song-name-1' type='text' name='song-name' class='sfi sfi-1 song-name-input' placeholder='Track Name'>
 				Album:
@@ -72,7 +72,7 @@ function submitAlbum(){
 	var privacy = $('input[name=privacy]:checked', '#album-form').val();
 	console.log(albumtitle)
 	console.log(privacy)
-	$.post('/upload',{get:'album',albumtitle:albumtitle,privacy:privacy}, function(data){
+	$.post('/uploadsongs',{get:'album',albumtitle:albumtitle,privacy:privacy}, function(data){
 		console.log(data)
 	})
 }
@@ -99,7 +99,7 @@ function uploadSong(index){
 	console.log('???')
 	var songname=$('#song-name-'+index).val()
 	var albumname = $('#song-album-'+ index).find(":selected").text();
-	$.post('/upload', {get:'song',songname:songname,albumname:albumname}, function(data){
+	$.post('/uploadsongs', {get:'song',songname:songname,albumname:albumname}, function(data){
 		songs = data.split('\n')
 		adInput(index, data[0])
 	});

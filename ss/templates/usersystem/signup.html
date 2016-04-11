@@ -1,0 +1,36 @@
+{% extends "signupbase.html" %}
+
+{% block signuptext %}
+<h1>Welcome to Starving Sounds!</h1>
+<ul>
+  <li><b>Compete:</b> Earn individual ranks for all your songs and compare your performance to the rest of the world.</li><br>
+  <li><b>Discover:</b> Access hand-picked playlists every week and browse the highest ranked artists and songs to find new music that you'll love.</li><br>
+  <li><b>Listen:</b> Listen to the songs you discover and store your music in a personalized library where you can make playlists.</li><br>
+</ul>
+{% endblock %}
+
+{% block signupform %}
+<h3>Signup</h3>
+<form method="post" action='' name="signup" id='signup-form' onsubmit="javascript:submitSign();return false;">
+  <input class='test-email' type='text' size='25' value='' name='password'>
+  <input id='formtype' type="hidden" name="formtype" value='udata'>
+  <input id='name' class='small-input' type="text" name="name" placeholder='{{aname}}'>
+  <input id='email' class='small-input' type="text" name="email" placeholder='{{email}}'>
+  <input id='password' class='small-input' type="password" name="legit-pass" placeholder='{{password}}'>
+  <input id='confirmpass' class='small-input' type="password" name="confirmpass" placeholder='{{cpass}}'>
+  <input id='city' class='small-input' type="text" name="city" placeholder='{{city}}'>
+  <input id='state' class='small-input' type="text" name="state" placeholder='{{state}}'>
+  <textarea class='small-input' rows='4' name='quote' placeholder='{{quote}}'></textarea>
+  <input class='formbutton nextbutton' type='button' value='Next' onclick="javascript:nextSign();return false;">
+</form>
+
+<form id='ppic-form' name="ppic-form" action='{{upurl}}' method='post' enctype="multipart/form-data">
+  <input type="hidden" name="formtype" value='ppic'>
+  <h3>Upload a profile picture</h3>
+  <input type="file" name="profilepic" id='profilepic' onchange="readimg(this);"><br>
+  <div id='demo_profile_pic'><img id='demo_profile_pic1'></div>
+  <input class='formbutton nextbutton' type='submit'>
+</form>
+
+<style>.test-email{display:none;}</style>
+{% endblock %}

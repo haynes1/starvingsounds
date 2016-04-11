@@ -1,0 +1,21 @@
+{% extends "signupbase.html" %}
+
+{% block signuptext %}
+<div id='admin' class='row'>
+  <h1>This is the admin page. Only you and I can see it</h1>
+  <h2>I will use this to post updates on my progress. Any time something large happens, there will be a message about it here</h2>
+
+  <div class='ap-wrapper'>
+    <h2>Message 0 (04/10/2016)</h2>
+    <p>Welcome to this page. You can see what I'm doing, pages that I'm currently working on (before they go public), and my future plans</p>
+  </div>
+</div>
+
+<style>
+#signup-form-wrapper{display:none;}
+#signup-text{position:relative;width:100%;margin:0 auto;}
+#admin{background:#262626;border:outset 5px #333333;padding:25px;}
+.ap-wrapper{background:black;border-radius:5px;padding:25px;}
+.ap-wrapper h2{margin-bottom:0;}
+</style>
+{% endblock %}

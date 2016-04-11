@@ -1,0 +1,29 @@
+{% extends "signupbase.html" %}
+
+{% block signuptext %}
+<h1>Welcome to Starving Sounds!</h1>
+<ul>
+  <li><b>Compete:</b> Earn individual ranks for all your songs and compare your performance to the rest of the world.</li><br>
+  <li><b>Discover:</b> Access hand-picked playlists every week and browse the highest ranked artists and songs to find new music that you'll love.</li><br>
+  <li><b>Listen:</b> Listen to the songs you discover and store your music in a personalized library where you can make playlists.</li><br>
+</ul>
+{% endblock %}
+
+{% block signupform %}
+<h3>Signup</h3>
+<form method="post" name="signup" id='login_form' onsubmit="javascript:submitLogin();return false;">
+  <input id='name' class='small-input' type="text" name="name" placeholder='Artist Name'></br>
+  <input id='password' class='small-input' type="text" name="password" placeholder='password'></br>
+  <input id='subbutton' type='button' value='submit' onclick="javascript:submitLogin();return false;">
+</form>
+
+<script>
+function submitLogin(){
+  var fd = $('#login_form').serialize();
+  $.post('/login', fd, function(data){
+    console.log(data)
+    if (data == 'success'){window.location.replace("/")}
+  });
+}
+</script>
+{% endblock %}
