@@ -449,7 +449,11 @@ class Mockup(BaseHandler):
 
 class Standings(BaseHandler):
     def get(self):
-        self.render('standings.html')      
+        self.render('standings.html')
+
+class Mprofile(BaseHandler):
+    def get(self):
+        self.render('mockupprofile.html')      
 
 application = webapp2.WSGIApplication([
     ('/', Home),
@@ -461,5 +465,6 @@ application = webapp2.WSGIApplication([
     ('/matchups', Matchups),
     ('/emailsignup', Esf),
     ('/mockup',Mockup),
-    ('/mockup/standings',Standings)
+    ('/mockup/standings',Standings),
+    ('/mockup/profile', Mprofile)
 ], debug=True)
