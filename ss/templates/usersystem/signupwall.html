@@ -1,0 +1,37 @@
+{% extends "signupbase.html" %}
+
+{% block signuptext %}
+<h2>We're currently only accepting artists already part of the alpha</h2>
+<h3>Want to become part of the alpha?</h2>
+<ul>
+	<li>Get early access to new features</li>
+	<li>Reserve your artist name</li>
+	<li>Be the first to know when we launch</li>
+</ul>
+<div id='esf-form-wrapper'>
+	<form name='esf-form' id='esf-form'>
+		<input type='text' name='email', id='esf-input' placeholder='Enter Email'>
+		<div id='esf-submit' onclick="javascript:submitESF();return false;">Submit</div>
+	</form>
+	<div id='esf-success'>
+		<h3>Success!</h3>
+		Thanks for signing up!<br>
+		<img id='esf-success-check' src='/images/check.png' alt='...'>
+		We'll only email you when absolutely necessary
+	</div>
+</div>
+{% endblock %}
+
+{% block signupform %}
+<h3>Enter your key here to sign up</h3>
+<form method='post' method='/signup' name='signupwall' id='signupwall'>
+	<input type='hidden' name='formtype' value='keyform'>
+	<input class='test-email' type='text' size='25' value='' name='password'>
+	<input type='text' class='small-input' name='key' placeholder='{{msg}}'>
+	<input type='submit' class='formbutton'>
+</form>
+
+<style>
+.test-email{display:none;}
+</style>
+{% endblock %}

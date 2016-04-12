@@ -1,0 +1,22 @@
+{% extends "signupbase.html" %}
+
+{% block signuptext %}
+<h1>Welcome to Starving Sounds!</h1>
+<ul>
+  <li><b>Compete:</b> Earn individual ranks for all your songs and compare your performance to the rest of the world.</li><br>
+  <li><b>Discover:</b> Access hand-picked playlists every week and browse the highest ranked artists and songs to find new music that you'll love.</li><br>
+  <li><b>Listen:</b> Listen to the songs you discover and store your music in a personalized library where you can make playlists.</li><br>
+</ul>
+{% endblock %}
+
+{% block signupform %}
+<h3>Signup</h3>
+{{error}}
+<form method="post" action='/login' name="signup" id='login_form'>
+  <input id='name' class='small-input' type="text" name="name" placeholder='Artist Name'></br>
+  <input id='password' class='small-input' type="password" name="legit-pass" placeholder='password'></br>
+  <input id='subbutton' type='submit'>
+</form>
+<a href='/passwordreset'>Lost Password?</a>
+
+{% endblock %}

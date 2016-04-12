@@ -6,6 +6,14 @@ function scroller(id,classname){
   fadeIn(id, 'block')
 }
 
+function fadeIn(id,display){
+  $('#'+id).css('display',display)
+  $('#'+id).css('opacity','0')
+  $('#'+id).animate({
+        opacity: "1"
+        }, 500);
+}
+
 function navShowHide(i){
 	state = $('#mainav_wrapper').attr('value')
 	if (state != 'contracted' || i == 'close'){ //contract nav
@@ -28,6 +36,44 @@ function alert(msg){
 	$('#alert').animate({opacity: '0'}, 3000);
 }
 
+function submitESF(){
+	$.post('/emailsignup', $("#esf-form").serialize(), function(data){
+		if(data == 'success'){
+			$('#esf-form').css('display','none')
+			$('#esf-success').css('display','block')
+		}else{
+			$('#esf-input').val('')
+			$('#esf-input').attr('placeholder','Invalid Email')
+		}
+	})
+}
+
+function nextSign(){
+	$.post('/signup', $('#signup-form').serialize(), function(data){
+		if(data == 'success'){
+			$('#signup-form').css('display','none')
+			fadeIn('ppic-form','block')
+			window.open("/admin");
+		}else{
+		darray = data.split(',')
+			for(i=0;i<darray.length - 1;i++){
+				em = darray[i].split(':')
+				$('#'+em[0]).val('')
+				$('#confirmpass').val('')
+				$('#password').val('')
+				$('#'+em[0]).attr('placeholder',em[1])
+			}
+		}
+	});
+}
+
+function ppicSubmit(){
+	if($('#profilepic').val().match(/\.(jpg|jpeg|png)$/)){
+    	$.post($('#ppic-form').attr('action'),$('#ppic-form').serialize(), function(data){
+    		console.log(data)
+    	})
+	}
+}
 
 function playSong_deprecated(songname){
     var player=document.getElementById('acontrol');
