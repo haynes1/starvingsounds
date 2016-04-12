@@ -17,7 +17,7 @@ img{height:100%;}
 #topbar{position:relative;margin:0 auto;width:1280px;max-width:100vw;background:#363535;}
 #bottombar{line-height:50px;z-index:100;margin:0 auto;width:1280px;max-width:100vw;height:50px;background:#363535;}
 #bodyarea{z-index:0;position:relative;margin:50px auto 0;width:1280px;max-width:100vw;min-height:calc(100vh - 100px);display:flex;}
-#leftside{background:#1c1c1c;width:200px;font-size:80%;overflow:auto;}
+#leftside{position:fixed;min-height:calc(100vw - 100px);background:#1c1c1c;width:200px;font-size:80%;overflow:auto;}
 #ls-profile{border-bottom:solid 1px #464646;padding:0 10px;}
 #lsp-1{text-align:center;font-size:18px;}
 #lsppic{margin:20px auto 0;width:150px;height:150px;}
@@ -33,8 +33,8 @@ img{height:100%;}
 #lsp-5{text-align:center;}
 #ls-nav ul{margin:20px 0;padding:0;text-align:center;list-style:none}
 #ls-nav ul li{cursor:pointer;}
-#content{position:relative;background:black;width:730px;}
-#rightside{background:#1c1c1c;width:330px;padding:0 10px;font-size:85%;}
+#content{position:relative;background:black;width:730px;margin-left:200px;}
+#rightside{position:fixed;background:#1c1c1c;width:330px;padding:0 10px;font-size:85%;}
 #rs-1{margin:20px 0 40px calc(100% - 200px);width:200px;height:50px;}
 #rs1-1{display:flex;justify-content:space-between;}
 #rs1-2{text-align:right;}

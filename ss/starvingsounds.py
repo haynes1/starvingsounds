@@ -165,6 +165,17 @@ class GetImage(BaseHandler):
         self.response.headers['Content-Type'] = 'image/png'
         self.response.out.write(thumbnail)
 
+class SCMatchups(BaseHandler):
+    def get(self):
+        if self.read_secure_cookie('sid'):
+            secleft = self.is_session_active()
+            if secleft >= 0:
+                self.render('soundcloud/scmatchups.html')
+            else:
+                self.redirect('/login')
+        else:
+            self.redirect('/login')
+
 
 application = webapp2.WSGIApplication([
     ('/', Home),
@@ -181,5 +192,6 @@ application = webapp2.WSGIApplication([
     ('/mockup/standings',Standings),
     ('/mockup/profile', Mprofile),
     ('/image', GetImage),
-    ('/admin', Admin)
+    ('/admin', Admin),
+    ('/scmatchups', SCMatchups)
 ], debug=True)

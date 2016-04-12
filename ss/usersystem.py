@@ -12,9 +12,9 @@ class Admin(BaseHandler):
             if secleft >= 0:
                 self.render('usersystem/admin.html')
             else:
-                self.redirect('/')
+                self.redirect('/login')
         else:
-            self.redirect('/')
+            self.redirect('/login')
 
 class Signup(BaseHandler):
 

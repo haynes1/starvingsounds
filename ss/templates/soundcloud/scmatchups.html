@@ -1,0 +1,20 @@
+{% extends "mockupbase.html" %}
+{% block content %}
+<div id='scmatchups'>
+	<h1>This is the Soundcloud based matchups page</h1>
+	<p>It'll still need your design touch, but let me lay out all the choices I have. First, we don't have to use the soundcloud widgets below. We can just stream from soundcloud using our own looks/front end, but it takes more dev work. I think I'll get the system working with the widgets for The Big Sell, and then after that move to streaming. The streaming thing is amazing because I don't have to do it (its really hard) and we can use their databases (less cost for us).<br><br>
+	As far as layouts go, I was thinking the vertical, but idk. Do you want me to include all of the sidebar stuff?? I did for now just because this page hasn't grown very far yet.</p>
+
+	<div class='scwidget-wrapper'>
+		<iframe width="100%" height="300" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/254819434&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>
+	</div>
+	<h1 style='text-align:center'>Vs.</h1>
+	<div class='scwidget-wrapper'>
+		<iframe width="100%" height="300" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/256381336&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>
+	</div>
+</div>
+
+<style>
+#scmatchups{padding:25px;}
+</style>
+{% endblock %}
