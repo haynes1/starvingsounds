@@ -82,8 +82,6 @@ class User(ndb.Model):
         u = cls.by_name(name)
         if u and valid_pw(name, pw, u.pw_hash):
             return u
-        else:
-            return 'Something Fucking up'
 
 class Session(db.Model):
     userid = db.IntegerProperty(required = True)

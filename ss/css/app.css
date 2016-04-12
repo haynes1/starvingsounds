@@ -3,7 +3,9 @@ img{height:100%;}
 input::-webkit-input-placeholder{color:#999999;}
 textarea{height:auto !important;}
 
-.row{max-width:1280px;position:relative;margin:25px auto;width:90vw;display:flex;flex-direction:row;justify-content:space-between;flex-wrap:wrap;}
+.row{width:1280px;max-width:90vw;position:relative;margin:25px auto;display:flex;flex-direction:row;justify-content:space-between;flex-wrap:wrap;}
+.bluelink{color:#05b1e9 !important;text-decoration:none;}
+
 #esf-form-wrapper{margin:50px 0;}
 #esf-input{width:calc(100% - 200px);background:#262626;color:white;padding:10px;text-align:center;font-size:16px;border:solid 2px black;}
 #esf-submit{display:inline-block;background:#737373;width:70px;text-align:center;height:38px;line-height:38px;padding:0 20px;border:solid 2px black;cursor:pointer;}
