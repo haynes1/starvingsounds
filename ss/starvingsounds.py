@@ -24,6 +24,7 @@ from basehandler import *
 from blobhandler import *
 import databaseclasses
 from usersystem import *
+from soundcloudsystem import *
 
 
 #--------------------------Pages----------------------------------------
@@ -164,18 +165,6 @@ class GetImage(BaseHandler):
         thumbnail = img.execute_transforms(output_encoding=images.PNG)
         self.response.headers['Content-Type'] = 'image/png'
         self.response.out.write(thumbnail)
-
-class SCMatchups(BaseHandler):
-    def get(self):
-        if self.read_secure_cookie('sid'):
-            secleft = self.is_session_active()
-            if secleft >= 0:
-                self.render('soundcloud/scmatchups.html')
-            else:
-                self.redirect('/login')
-        else:
-            self.redirect('/login')
-
 
 application = webapp2.WSGIApplication([
     ('/', Home),

@@ -2,6 +2,9 @@ from datetime import datetime, date, time, timedelta
 from google.appengine.api import memcache
 from starvingsounds import *
 
+import soundcloud
+
+
 class SCMatchups(BaseHandler):
     def get(self):
         if self.read_secure_cookie('sid'):

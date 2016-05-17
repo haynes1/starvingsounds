@@ -11,6 +11,8 @@ libraries:
   version: latest
 - name: MySQLdb                                                            
   version: latest
+- name: soundcloud
+  version: latest
   
 handlers:
 - url: /styles
