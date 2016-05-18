@@ -182,5 +182,7 @@ application = webapp2.WSGIApplication([
     ('/mockup/profile', Mprofile),
     ('/image', GetImage),
     ('/admin', Admin),
-    ('/scmatchups', SCMatchups)
+    ('/scmatchups', SCMatchups),
+    ('/sc/login', SClogin),
+    ('/sc/profile', SCprofile)
 ], debug=True)
