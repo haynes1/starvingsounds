@@ -184,5 +184,6 @@ application = webapp2.WSGIApplication([
     ('/admin', Admin),
     ('/scmatchups', SCMatchups),
     ('/sc/login', SClogin),
+    ('/sc/welcome', SCwelcome),
     ('/sc/profile', SCprofile)
 ], debug=True)

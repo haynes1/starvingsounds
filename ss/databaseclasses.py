@@ -37,6 +37,46 @@ def valid_pw(email, password, h):
     return h == make_pw_hash(email, password, salt)
 
 #--------------------------DB Classes----------------------------------------
+class ScUser(ndb.Model):
+    client_id = ndb.IntegerProperty(required = True)
+    username = ndb.StringProperty(required = True)
+    email = ndb.StringProperty()
+    uri = ndb.StringProperty(required = True)
+    permalink_url = ndb.StringProperty(required = True)
+    avatar_url = ndb.StringProperty(required = True)
+    country = ndb.StringProperty()
+    full_name = ndb.StringProperty(required = True)
+    city = ndb.StringProperty()
+    description = ndb.StringProperty()
+    website = ndb.StringProperty()
+    website_title = ndb.StringProperty()
+    track_count = ndb.StringProperty(required = True)
+    playlist_count = ndb.StringProperty(required = True)
+    followers = ndb.IntegerProperty(required = True)
+    followings = ndb.IntegerProperty(required = True)
+
+    @classmethod
+    def by_client_id(cls, client_id):
+        u = cls.query(cls.client_id == client_id).get()
+        return u
+
+    @classmethod
+    def register(cls,scobject):
+        return cls( client_id = client_id,
+            username = scobject.username,
+            uri = scobject.uri,
+            permalink_url = scobject.permalink_url,
+            avatar_url = scobject.avatar_url,
+            country = scobject.country,
+            full_name = scobject.full_name,
+            city = scobject.city,
+            description = scobject.description,
+            website = scobject.website,
+            website_title = scobject.website_title,
+            track_count = scobject.track_count,
+            playlist_count = scobject.playlist_count,
+            followers = scobject.followers,
+            followings = scobject.followings)
 
 class User(ndb.Model):
     name = ndb.StringProperty(required = True)
