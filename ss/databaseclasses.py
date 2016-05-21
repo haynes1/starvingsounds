@@ -8,7 +8,8 @@ from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 from google.appengine.ext.db import GqlQuery
 from google.appengine.ext import db
-
+import logging
+import json
 
 secret = 'pimpsauce'
 SESSION_LENGTH = 7200*36
@@ -38,7 +39,8 @@ def valid_pw(email, password, h):
 
 #--------------------------DB Classes----------------------------------------
 class ScUser(ndb.Model):
-    client_id = ndb.IntegerProperty(required = True)
+    scid = ndb.IntegerProperty(required = True)
+    access_token = ndb.StringProperty(required = True)
     username = ndb.StringProperty(required = True)
     email = ndb.StringProperty()
     uri = ndb.StringProperty(required = True)
@@ -50,19 +52,20 @@ class ScUser(ndb.Model):
     description = ndb.StringProperty()
     website = ndb.StringProperty()
     website_title = ndb.StringProperty()
-    track_count = ndb.StringProperty(required = True)
-    playlist_count = ndb.StringProperty(required = True)
+    track_count = ndb.IntegerProperty(required = True)
+    playlist_count = ndb.IntegerProperty(required = True)
     followers = ndb.IntegerProperty(required = True)
     followings = ndb.IntegerProperty(required = True)
 
     @classmethod
-    def by_client_id(cls, client_id):
-        u = cls.query(cls.client_id == client_id).get()
+    def by_scid(cls, scid):
+        u = cls.query(cls.scid == scid).get()
         return u
 
     @classmethod
-    def register(cls,scobject):
-        return cls( client_id = client_id,
+    def register(cls,scobject,access_token):
+        return cls(scid = int(scobject.id),
+            access_token = access_token,
             username = scobject.username,
             uri = scobject.uri,
             permalink_url = scobject.permalink_url,
@@ -75,8 +78,8 @@ class ScUser(ndb.Model):
             website_title = scobject.website_title,
             track_count = scobject.track_count,
             playlist_count = scobject.playlist_count,
-            followers = scobject.followers,
-            followings = scobject.followings)
+            followers = scobject.followers_count,
+            followings = scobject.followings_count)
 
 class User(ndb.Model):
     name = ndb.StringProperty(required = True)

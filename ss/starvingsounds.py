@@ -156,15 +156,6 @@ class Standings(BaseHandler):
 class Mprofile(BaseHandler):
     def get(self):
         self.render('mockupprofile.html')      
-class GetImage(BaseHandler):
-    def get(self):
-        i = self.request.get('id')
-        img = images.Image(blob_key=i)
-        img.resize(width=100, height=100)
-        img.im_feeling_lucky()
-        thumbnail = img.execute_transforms(output_encoding=images.PNG)
-        self.response.headers['Content-Type'] = 'image/png'
-        self.response.out.write(thumbnail)
 
 application = webapp2.WSGIApplication([
     ('/', Home),
@@ -180,7 +171,6 @@ application = webapp2.WSGIApplication([
     ('/mockup',Mockup),
     ('/mockup/standings',Standings),
     ('/mockup/profile', Mprofile),
-    ('/image', GetImage),
     ('/admin', Admin),
     ('/scmatchups', SCMatchups),
     ('/sc/login', SClogin),
