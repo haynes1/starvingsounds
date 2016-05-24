@@ -10,6 +10,7 @@ from google.appengine.ext.db import GqlQuery
 from google.appengine.ext import db
 import logging
 import json
+from datetime import datetime, date, time, timedelta
 
 secret = 'pimpsauce'
 SESSION_LENGTH = 7200*36
@@ -38,6 +39,36 @@ def valid_pw(email, password, h):
     return h == make_pw_hash(email, password, salt)
 
 #--------------------------DB Classes----------------------------------------
+class ScTrack(ndb.Model):
+    song_id = ndb.IntegerProperty(required = True)
+    created_at = ndb.DateTimeProperty(required = True)
+    user_id = ndb.IntegerProperty(required = True)
+    title = ndb.StringProperty(required = True)
+    permalink = ndb.StringProperty(required = True)
+    permalink_url = ndb.StringProperty(required = True)
+    uri = ndb.StringProperty(required = True)
+    purchase_url = ndb.StringProperty()
+    artwork_url = ndb.StringProperty()
+
+    @classmethod
+    def add(cls, scobject):
+        created_at = datetime.strptime(scobject.created_at, '%Y/%m/%d %H:%M:%S +%f')
+        try:
+            artwork_url = scobject.artwork_url
+        except:
+            artwork_url = 'None'
+        return cls(song_id = int(scobject.id),
+            created_at = created_at,
+            user_id = scobject.user_id,
+            title = scobject.title,
+            permalink = scobject.permalink,
+            permalink_url = scobject.permalink_url,
+            uri = scobject.uri,
+            purchase_url = scobject.purchase_url,
+            artwork_url = artwork_url)
+
+
+
 class ScUser(ndb.Model):
     scid = ndb.IntegerProperty(required = True)
     access_token = ndb.StringProperty(required = True)

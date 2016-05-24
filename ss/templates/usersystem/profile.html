@@ -49,6 +49,17 @@
 				<td id='st-winp' class='st-end'>Win%</td>
 				<td id='elipses' class='st-end'></td>
 			</tr>
+			{% for track in tracklist %}
+				<tr id='st-titles'>
+					<td id='st-play' class='st-short'>XXXXX</td>
+					<td id='st-plus' class='st-short'>XXXXX</td>
+					<td id='st-num' class='st-short'>XXXXX</td>
+					<td id='st-name'>{{track.title}}</td>
+					<td id='st-rank' class='st-end'>XXXXX</td>
+					<td id='st-winp' class='st-end'>XXXXX</td>
+					<td id='elipses' class='st-end'>XXXXX</td>
+				</tr>
+			{% endfor %}
 		</table>
 	</div>
 	<form id='import-form' method='post' action='/sc/profile'>

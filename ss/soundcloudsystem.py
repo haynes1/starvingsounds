@@ -17,6 +17,7 @@ client = soundcloud.Client(client_id=client_id,
 
 soundcloud_url = 'https://api.soundcloud.com'
 
+
 class SCMatchups(BaseHandler):
     def get(self):
         if self.read_secure_cookie('sid'):
@@ -44,12 +45,17 @@ class SCwelcome(BaseHandler):
 		self.render('usersystem/scwelcome.html', user = soundcloud_user)
 
 class SCprofile(BaseHandler):
+	def get_tracks(self,user_id):
+		tracks = ScTrack.query(ScTrack.user_id == user_id)
+		return tracks
+
 	def get(self):
 		scid = self.read_secure_cookie('scid')
 		if scid:
 			user = ScUser.by_scid(int(scid))
 			if user:	
-				self.render('usersystem/profile.html', user=user)
+				tracklist = self.get_tracks(user.scid)
+				self.render('usersystem/profile.html', user=user, tracklist=tracklist)
 		else:
 			self.redirect('/')
 
@@ -59,14 +65,27 @@ class SCprofile(BaseHandler):
 		if scid:
 			user = ScUser.by_scid(int(scid))
 			if user:
-				user_client = soundcloud.Client(access_token=user.access_token)
-				tracks = user_client.get('/tracks', limit=10)
+				#import songs
+				user_client = soundcloud.Client(user = user.scid, access_token=user.access_token)
+				tracks = client.get('users/'+str(user.scid)+'/tracks', limit=10)
 				track_names = ''
 				for track in tracks:
-				    print track.title
+				    tobject = ScTrack.add(track)
+				    tobject.put()
+				    logging.info(vars(tobject))
 				    track_names = track_names + track.title+'   ****   '
-				self.write(track_names)
+
+				#get tracks and render page
+				tracklist = self.get_tracks(user.scid)
+				self.render('usersystem/profile.html', user=user, tracklist=tracklist)
 		else:
 			self.redirect('/')
+
+class SClibrary(BaseHandler):
+	def get(self):
+		tracks = ScTrack.query().fetch(20)
+		for track in tracks:
+			logging.error(track.title)
+		self.write('SUCCESS!!')
 
 		
