@@ -70,9 +70,11 @@ class SCprofile(BaseHandler):
 				tracks = client.get('users/'+str(user.scid)+'/tracks', limit=10)
 				track_names = ''
 				for track in tracks:
-				    tobject = ScTrack.add(track)
-				    tobject.put()
-				    logging.info(vars(tobject))
+				    existing = ScTrack.query(ScTrack.song_id == track.id).get()
+				    if not existing: #song already exists, don't add
+				    	tobject = ScTrack.add(track)
+				    	tobject.put()
+				    	logging.info(vars(tobject))
 				    track_names = track_names + track.title+'   ****   '
 
 				#get tracks and render page
@@ -83,9 +85,17 @@ class SCprofile(BaseHandler):
 
 class SClibrary(BaseHandler):
 	def get(self):
-		tracks = ScTrack.query().fetch(20)
-		for track in tracks:
+		tracklist = ScTrack.query().fetch(20)
+		for track in tracklist:
 			logging.error(track.title)
-		self.write('SUCCESS!!')
+		self.render('soundcloud/sclibrary.html', user='None', tracklist=tracklist)
+
+class SCplayer(BaseHandler):
+	def post(self):
+		track_id = self.request.get('track_id')
+		track = client.get('/tracks/'+track_id)
+		stream_url = client.get(track.stream_url, allow_redirects=False)
+		self.write(stream_url.location)
+		
 
 		

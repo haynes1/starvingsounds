@@ -176,5 +176,6 @@ application = webapp2.WSGIApplication([
     ('/sc/login', SClogin),
     ('/sc/welcome', SCwelcome),
     ('/sc/profile', SCprofile),
-    ('/sc/library', SClibrary)
+    ('/sc/library', SClibrary),
+    ('/soundcloud-player', SCplayer)
 ], debug=True)
